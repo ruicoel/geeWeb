@@ -1,0 +1,17 @@
+#btn_criar_conta{
+    background-color: #1AB394;
+    color: #FFFFFF;
+    border-color: #FFFFFF;
+    border-radius: 7px;
+    width: 200px;
+}
+#btn_fazer_login{
+    background-color: #1AB394;
+    color: #FFFFFF;
+    border-color: #FFFFFF;
+    border-radius: 7px;
+    width: 200px;
+}
+#login-nav input {
+    margin-bottom: 15px;
+}
