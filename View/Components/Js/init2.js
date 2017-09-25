@@ -18,6 +18,7 @@ function initMap() {
             //infoWindow.setPosition(pos);
             //infoWindow.setContent('Location found.');
             var marker      = new google.maps.Marker({
+                icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
                 position: pos,
                 map: map,
                 title: 'Hello World!'
