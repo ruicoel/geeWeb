@@ -3,7 +3,7 @@
 <head>
 
 	<title>Dashboard</title>
-    <?php include_once "head.php"; ?>
+    <?php include_once "header.php"; ?>
 
 </head>
 <body>

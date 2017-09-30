@@ -18,7 +18,7 @@
             <ul class="nav">
 
                 <li>
-                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><i class=""></i><p>Categorias</p></a>
+                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><i class="material-icons">keyboard_arrow_down</i><p>Categorias</p></a>
                     <div class="collapse" id="grupo-categoria">
                         <a href="#" class="list-group-item"><p id="cat1">Kichute na grama</p></a>
                         <a href="#" class="list-group-item"><p id="cat2">Futebol com a mao</p></a>
@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="maps.html">
+                    <a href="maps.php">
                         <i class="pe-7s-map-marker"></i>
                         <p>Maps</p>
                     </a>
