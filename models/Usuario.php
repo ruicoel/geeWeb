@@ -10,7 +10,7 @@ class Usuario
 {
     private $id;
     private $nome;
-    private $login;
+    private $email;
     private $senha;
     private $tipo;
 
@@ -49,17 +49,17 @@ class Usuario
     /**
      * @return mixed
      */
-    public function getLogin()
+    public function getEmail()
     {
-        return $this->login;
+        return $this->email;
     }
 
     /**
-     * @param mixed $login
+     * @param mixed $email
      */
-    public function setLogin($login)
+    public function setEmail($email)
     {
-        $this->login = $login;
+        $this->email = $email;
     }
 
     /**

@@ -1,3 +1,10 @@
+<?php session_start();
+if (!isset($_SESSION['email']) || (!isset($_SESSION['senha']))) {
+    session_destroy();
+    header("Location: index.html");
+}
+?>
+
 <meta charset="utf-8" />
 <link rel="icon" type="image/png" href="assets/img/favicon.ico">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -12,7 +19,7 @@
 <link href="../Components/Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 
 <!-- Animation library for notifications   -->
-<link href="../Components/Bootstrap/Libs/animate.min.css" rel="stylesheet"/>
+<link href="../Components/Libs/animate.min.css" rel="stylesheet"/>
 
 <!--  Light Bootstrap Table core CSS    -->
 <link href="../Components/Bootstrap/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
@@ -26,4 +33,3 @@
 <!--     Fonts and icons     -->
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-<link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />

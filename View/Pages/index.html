@@ -218,7 +218,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Email</label>
-                                                <input type="email" class="form-control" placeholder="Email" name="email">
+                                                <input type="text" class="form-control" placeholder="Email" name="email">
                                             </div>
                                         </div>
                                     </div>
@@ -320,16 +320,28 @@
 <script>
     $("document").ready(function(){
        $("#formCriarConta").submit(function(){
-           alert("submitou");
-           var data = {"acao":"criarConta"};
-           data = $(this).serialize()+"&"+$.param(data);
+           var data = $(this).serialize()+"&acao=criarConta";
            $.ajax({
                type: "POST",
-               dataType: "json",
                url: "../../controller/ControllerLogin.php",
                data: data,
                success: function(data){
-                   alert("Cadastrado com sucesso!");
+                   $('#formCriarConta').trigger("reset");
+                   $.notify({
+                       title: '<strong>Sucesso!</strong>',
+                       message: 'Cadastro efetuado com êxito.'
+                   },{
+                       delay: 3000,
+                       type: "success",
+                       placement:{
+                           from: "top",
+                           align: "left"
+                       }
+                   });
+               },
+               error: function (xhr, ajaxOptions, thrownError) {
+                   alert(xhr.status);
+                   alert(thrownError);
                }
            });
            return false;
