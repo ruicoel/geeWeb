@@ -13,14 +13,24 @@ abstract class TipoUsuario
     const MODERADOR = 2;
 
     public static function getTipo($tipo){
-        if($tipo == COMUM){
+        if($tipo == self::COMUM){
             return "COMUM";
-        }else if($tipo == PROPRIETARIO){
+        }else if($tipo == self::PROPRIETARIO){
             return "PROPRIETARIO";
-        }else if($tipo == MODERADOR){
+        }else if($tipo == self::MODERADOR){
             return "MODERADOR";
         }else{
             return null;
         }
+    }
+
+    public static function getConstants() {
+        $constCacheArray[] = null;
+        $calledClass = get_called_class();
+        if (!array_key_exists($calledClass, $constCacheArray)) {
+            $reflect = new ReflectionClass($calledClass);
+            $constCacheArray[$calledClass] = $reflect->getConstants();
+        }
+        return $constCacheArray[$calledClass];
     }
 }

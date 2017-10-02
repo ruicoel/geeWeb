@@ -14,7 +14,7 @@ class DatabaseConnection
         $db_host = "localhost";
         $db_nome = "gee";
         $db_usuario = "postgres";
-        $db_senha = "";
+        $db_senha = "postgres";
         $db_driver = "pgsql";
         try
         {

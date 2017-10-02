@@ -47,8 +47,8 @@ class ControllerUsuario
             foreach($vetUsuario as $usuario) {
                 $retorno .= "<tr>";
                 $retorno .= "<td class='listaNome'> ". $usuario->getNome() ."</td>";
-                $retorno .= "<td> ".$usuario->getEmail()." </td>";
-                $retorno .= "<td> ".TipoUsuario::getTipo($usuario->getTipo())." </td>";
+                $retorno .= "<td class='listaEmail'> ".$usuario->getEmail()." </td>";
+                $retorno .= "<td class='listaTipo' data-tipo='$usuario->getTipo'> ".TipoUsuario::getTipo($usuario->getTipo())." </td>";
                 $retorno .= "<td> <button type='button' class='btn btn-primary btn-sm editar' data-id='".$usuario->getId()."'> <span class='glyphicon glyphicon-pencil'/> </button> <button type='button' class='btn btn-danger btn-sm remover' data-id='".$usuario->getId()."'> <span class='glyphicon glyphicon-remove'/> </button> </td>";
                 $retorno .="</tr>";
             }

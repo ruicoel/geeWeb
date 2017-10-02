@@ -3,7 +3,7 @@
 <head>
     <title>Usuarios</title>
     <?php include_once "head.php"; ?>
-
+    <?php require_once "../../models/TipoUsuario.php"; ?>
 </head>
 <div>
     <?php include_once "menu.php"; ?>
@@ -36,6 +36,64 @@
                         </div>
 
                         <div class="footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <br>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Formulário do Usuário</h4>
+                    </div>
+                    <div class="content">
+                        <form id="formUsuario">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="nome">Nome</label>
+                                        <input type="text" name="nome" class="form-control" placeholder="Nome do usuário"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="email">E-mail</label>
+                                        <input type="text" name="email" class="form-control" placeholder="E-mail do usuário"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="tipo">Tipo de usuário</label>
+                                        <select class="form-control" name="tipo">
+                                            <?php
+                                                foreach(TipoUsuario::getConstants() as $const){
+                                                    echo "<option value='".$const."'> ".TipoUsuario::getTipo($const)." </option>";
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="senha">Senha</label>
+                                        <input type="text" name="senha" class="form-control" placeholder="Nova senha do usuário"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group buttons">
+                                        <input type="hidden" name="acao" value="cadastrar"/>
+                                        <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-plus"></span> Cadastrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -92,12 +150,14 @@
             })
         });
         $(document).on('click', '.editar', function(){
-            var descricao = $(this).closest('tr').find('.listaDescricao').html();
-            var cor = $(this).closest('tr').find('.listaCor').data("color");
+            var nome = $(this).closest('tr').find('.listaNome').html();
+            var email = $(this).closest('tr').find('.listaEmail').html();
+            var tipo = $(this).closest('tr').find('.listaTipo').data('tipo');
+            $('option[value=""]')
             var id = $(this).data('id');
-            $('input[name="descricao"]').val(descricao.trim());
-            $('input[name="cor"]').minicolors("value", cor);
-            $('#formCategoria').append("<input type='hidden' name='id' value='"+id+"'/>");
+            $('input[name="nome"]').val(nome.trim());
+            $('input[name="email"]').val(email.trim());
+            $('#formUsuario').append("<input type='hidden' name='id' value='"+id+"'/>");
             $('input[name="acao"]').val("alterar");
         });
         $(document).on('click', '.remover', function(){
