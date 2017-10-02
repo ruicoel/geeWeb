@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Home1</title>
+    <title>Categorias</title>
     <?php include_once "head.php"; ?>
 
 </head>
@@ -33,9 +33,7 @@
                                 </table>
                             </div>
 
-                            <div class="footer">
-                                <button type='button' class='btn btn-primary btn-sm'> <span class='glyphicon glyphicon-plus'/></button>
-                            </div>
+                            <div class="footer"></div>
                         </div>
                     </div>
                 </div>
@@ -60,7 +58,7 @@
                                         <input type="text" name="cor" data-control="hue" class="form-control minicolors-input input-lg" size="7"/>
                                     </div>
                                     <input type="hidden" name="acao" value="cadastrar"/>
-                                    <input type="submit" class="btn btn-primary" value="Submit"/>
+                                    <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-plus"></span> Cadastrar</button>
                                 </form>
                             </div>
                         </div>

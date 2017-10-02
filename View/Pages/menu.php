@@ -28,7 +28,13 @@
 
                 <li>
                     <a href="mCategoria.php">
-                        <p>Categorias</p>
+                        <p><span class="glyphicon glyphicon-tag"></span> Categorias</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="mUsuario.php">
+                        <p><span class="glyphicon glyphicon-user"></span> Usuários</p>
                     </a>
                 </li>
             </ul>
@@ -46,7 +52,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="../../controller/ControllerLogin.php?acao=logout">
-                                Log out
+                              <span class="glyphicon glyphicon-log-out"></span> Sair
                             </a>
                         </li>
                     </ul>
