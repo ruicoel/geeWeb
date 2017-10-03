@@ -153,7 +153,7 @@
             var nome = $(this).closest('tr').find('.listaNome').html();
             var email = $(this).closest('tr').find('.listaEmail').html();
             var tipo = $(this).closest('tr').find('.listaTipo').data('tipo');
-            $('option[value=""]')
+            $('option[value="'+tipo+'"]').attr('selected', true);
             var id = $(this).data('id');
             $('input[name="nome"]').val(nome.trim());
             $('input[name="email"]').val(email.trim());
@@ -183,17 +183,15 @@
             })
         });
 
-        $("#formCategoria").submit(function(){
+        $("#formUsuario").submit(function(){
             var data = $(this).serialize();
             $.ajax({
                 type: "POST",
-                url: "../../controller/ControllerCategoria.php",
+                url: "../../controller/ControllerUsuario.php",
                 data: data,
                 success: function(data){
-                    $('#formCategoria').trigger("reset");
+                    $('#formUsuario').trigger("reset");
                     $('input[name="acao"]').val("cadastrar");
-                    $('input[name="cor"]').minicolors("destroy");
-                    $('input[name="cor"]').minicolors("create");
                     $.notify({
                         title: '<strong>Sucesso!</strong>',
                         message: 'Cadastro efetuado com êxito.'

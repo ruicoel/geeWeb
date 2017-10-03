@@ -28,6 +28,8 @@ class ControllerUsuario
             $this->listaHtml();
         }else if($acao == "remover"){
             $this->remover();
+        }else if($acao == "alterar"){
+            $this->alterar();
         }
     }
 
@@ -48,7 +50,7 @@ class ControllerUsuario
                 $retorno .= "<tr>";
                 $retorno .= "<td class='listaNome'> ". $usuario->getNome() ."</td>";
                 $retorno .= "<td class='listaEmail'> ".$usuario->getEmail()." </td>";
-                $retorno .= "<td class='listaTipo' data-tipo='$usuario->getTipo'> ".TipoUsuario::getTipo($usuario->getTipo())." </td>";
+                $retorno .= "<td class='listaTipo' data-tipo='".$usuario->getTipo()."'> ".TipoUsuario::getTipo($usuario->getTipo())." </td>";
                 $retorno .= "<td> <button type='button' class='btn btn-primary btn-sm editar' data-id='".$usuario->getId()."'> <span class='glyphicon glyphicon-pencil'/> </button> <button type='button' class='btn btn-danger btn-sm remover' data-id='".$usuario->getId()."'> <span class='glyphicon glyphicon-remove'/> </button> </td>";
                 $retorno .="</tr>";
             }
@@ -64,6 +66,21 @@ class ControllerUsuario
         $this->daoUsuario->excluir($id);
 
         echo true;
+    }
+
+    public function alterar(){
+        $this->daoUsuario = new DaoUsuario;
+        $usuario = new Usuario;
+        $usuario->setNome($_POST["nome"]);
+        $usuario->setEmail($_POST["email"]);
+        if(isset($_POST["senha"])) {
+            $usuario->setSenha(md5($_POST["senha"]));
+        }
+        $usuario->setTipo($_POST["tipo"]);
+
+        $retorno = $this->daoUsuario->alterar($usuario);
+
+        return $retorno;
     }
 
 

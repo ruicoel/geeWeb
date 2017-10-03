@@ -91,4 +91,28 @@ class DaoUsuario{
         }
     }
 
+    public function alterar($usuario){
+        try{
+            $db = DatabaseConnection::conexao();
+            $stmtString = "UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo";
+            $senha = $usuario->getSenha();
+            if($senha!=null){
+                $stmtString .= ", senha = :senha";
+            }
+            $stmtString .=" WHERE id = :id";
+            $stmt = $db->prepare($stmtString);
+            $stmt->bindParam(":nome", $usuario->getNome());
+            $stmt->bindParam(":email", $usuario->getEmail());
+            if($senha != null){$stmt->bindParam(":senha", $usuario->getSenha());}
+            $stmt->bindParam(":tipo", $usuario->getTipo());
+            $stmt->bindParam(":id", $usuario->getId());
+
+
+            $stmt->execute();
+            return true;
+        }catch (PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+    }
+
 }
