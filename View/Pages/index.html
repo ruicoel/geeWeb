@@ -337,6 +337,37 @@
            });
            return false;
        });
+        $("#login-nav").submit(function(){
+            var data = $(this).serialize();
+            $.ajax({
+                type: "POST",
+                url: "../../controller/ControllerLogin.php",
+                data: data,
+                success: function(data){
+                    $('#login-nav').trigger("reset");
+                    if(!data){
+                        $.notify({
+                            title: '<strong>Erro!</strong>',
+                            message: 'Usuário não encontrado.'
+                        },{
+                            delay: 3000,
+                            type: "warning",
+                            placement:{
+                                from: "top",
+                                align: "left"
+                            }
+                        });
+                    }else{
+                        $(location).attr('href', '/View/Pages/home.php');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+            return false;
+        });
     });
 </script>
 </html>

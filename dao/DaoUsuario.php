@@ -94,18 +94,17 @@ class DaoUsuario{
     public function alterar($usuario){
         try{
             $db = DatabaseConnection::conexao();
-            $stmtString = "UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo";
             $senha = $usuario->getSenha();
             if($senha!=null){
-                $stmtString .= ", senha = :senha";
+                $stmt = $db->prepare("UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo, senha = :senha WHERE id = :id" );
+                $stmt->bindValue(":senha", $usuario->getSenha());
+            }else{
+                $stmt = $db->prepare("UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo WHERE id = :id");
             }
-            $stmtString .=" WHERE id = :id";
-            $stmt = $db->prepare($stmtString);
-            $stmt->bindParam(":nome", $usuario->getNome());
-            $stmt->bindParam(":email", $usuario->getEmail());
-            if($senha != null){$stmt->bindParam(":senha", $usuario->getSenha());}
-            $stmt->bindParam(":tipo", $usuario->getTipo());
-            $stmt->bindParam(":id", $usuario->getId());
+            $stmt->bindValue(":nome", $usuario->getNome());
+            $stmt->bindValue(":email", $usuario->getEmail());
+            $stmt->bindValue(":tipo", $usuario->getTipo());
+            $stmt->bindValue(":id", $usuario->getId());
 
 
             $stmt->execute();

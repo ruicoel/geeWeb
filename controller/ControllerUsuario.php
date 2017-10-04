@@ -80,7 +80,7 @@ class ControllerUsuario
 
         $retorno = $this->daoUsuario->alterar($usuario);
 
-        return $retorno;
+        print_r(json_encode($usuario));
     }
 
 

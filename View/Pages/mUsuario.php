@@ -6,6 +6,70 @@
     <?php require_once "../../models/TipoUsuario.php"; ?>
 </head>
 <div>
+    <div id="modalUsuario" class="modal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Alterar Dados do Usuário</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="formUsuario">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" name="nome" class="form-control" placeholder="Nome do usuário"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="email">E-mail</label>
+                                    <input type="text" name="email" class="form-control" placeholder="E-mail do usuário"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="tipo">Tipo de usuário</label>
+                                    <select class="form-control" name="tipo">
+                                        <?php
+                                        foreach(TipoUsuario::getConstants() as $const){
+                                            echo "<option value='".$const."'> ".TipoUsuario::getTipo($const)." </option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="senha">Senha</label>
+                                    <input type="password" name="senha" class="form-control" placeholder="Nova senha do usuário"/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group buttons">
+                                    <input type='hidden' name='id' value=''/>
+                                    <input type="hidden" name="acao" value="alterar"/>
+                                    <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-plus"></span> Alterar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <?php include_once "menu.php"; ?>
 
 
@@ -41,63 +105,7 @@
             </div>
         </div>
 
-        <div class="row">
-            <br>
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">Formulário do Usuário</h4>
-                    </div>
-                    <div class="content">
-                        <form id="formUsuario">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="nome">Nome</label>
-                                        <input type="text" name="nome" class="form-control" placeholder="Nome do usuário"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="email">E-mail</label>
-                                        <input type="text" name="email" class="form-control" placeholder="E-mail do usuário"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="tipo">Tipo de usuário</label>
-                                        <select class="form-control" name="tipo">
-                                            <?php
-                                                foreach(TipoUsuario::getConstants() as $const){
-                                                    echo "<option value='".$const."'> ".TipoUsuario::getTipo($const)." </option>";
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label for="senha">Senha</label>
-                                        <input type="text" name="senha" class="form-control" placeholder="Nova senha do usuário"/>
-                                    </div>
-                                </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group buttons">
-                                        <input type="hidden" name="acao" value="cadastrar"/>
-                                        <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-plus"></span> Cadastrar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
     </div>
@@ -157,8 +165,8 @@
             var id = $(this).data('id');
             $('input[name="nome"]').val(nome.trim());
             $('input[name="email"]').val(email.trim());
-            $('#formUsuario').append("<input type='hidden' name='id' value='"+id+"'/>");
-            $('input[name="acao"]').val("alterar");
+            $('input[name="id"]').val(id);
+            $('#modalUsuario').modal({ show: 'true'});
         });
         $(document).on('click', '.remover', function(){
             var id = $(this).data("id");
@@ -190,11 +198,13 @@
                 url: "../../controller/ControllerUsuario.php",
                 data: data,
                 success: function(data){
-                    $('#formUsuario').trigger("reset");
-                    $('input[name="acao"]').val("cadastrar");
+                    alert(data);
+                  /*  $('#formUsuario').trigger("reset");
+                    getitens(pagina, nitens);
+                    $('#modalUsuario').modal({show: 'false'});
                     $.notify({
                         title: '<strong>Sucesso!</strong>',
-                        message: 'Cadastro efetuado com êxito.'
+                        message: 'Alteração efetuada com êxito.'
                     },{
                         delay: 5000,
                         type: "success",
@@ -202,8 +212,7 @@
                             from: "top",
                             align: "left"
                         }
-                    });
-                    getitens(pagina, nitens);
+                    });*/
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.status);
