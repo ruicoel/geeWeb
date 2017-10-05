@@ -40,7 +40,7 @@ class ControllerCategoria
         $max = $_GET["max"];
         $inicio = ($pag * $max) - $max;
         $daoCategoria = new DaoCategoria();
-        $vetCategoria = $daoCategoria->listar();
+        $vetCategoria = $daoCategoria->listar($inicio, $max);
         if(isset($vetCategoria)){
            foreach($vetCategoria as $categoria) {
                $retorno .= "<tr>";

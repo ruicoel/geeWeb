@@ -5,11 +5,11 @@ require_once '../models/DatabaseConnection.php';
 class DaoCategoria
 {
     // retirei os parametros do listar e o offset e limit da query lembra d colocar dpeois
-    public function listar(){
+    public function listar($inicio, $fim){
         try{
             $db = DatabaseConnection::conexao();
             $vetCategoria = null;
-            $stmt = $db->query("SELECT * FROM gee.categoria order by id desc");
+            $stmt = $db->query("SELECT * FROM gee.categoria order by id desc OFFSET ".$inicio." LIMIT ".$fim);
             foreach ($stmt as $row){
                 $categoria = new Categoria;
                 $categoria->setId($row["id"]);
