@@ -1,7 +1,7 @@
 <!--   Core JS Files   -->
 <!-- build:jquery -->
-<script src="../Components/JQuery/jquery-ui-1.12.1/**.*"></script>
 <script src="../Components/JQuery/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="../Components/JQuery/jquery-ui.js"></script>
 <!-- endbuild -->
 
 <!-- build:bootstrapjs -->
@@ -23,7 +23,7 @@
 
 
 <!--  Notifications Plugin    -->
-<script src="assets/js/bootstrap-notify.js"></script>
+<script src="../Components/Bootstrap/js/bootstrap-notify.js"></script>
 
 <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 

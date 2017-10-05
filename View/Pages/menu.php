@@ -11,14 +11,14 @@
         <div class="sidebar-wrapper" >
             <div class="logo">
                 <a href="#" class="simple-text">
-                    Movimento
+                    M o v i m e n t o
                 </a>
             </div>
 
             <ul class="nav">
 
                 <li>
-                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><i class="material-icons">keyboard_arrow_down</i><p>Categorias</p></a>
+                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><i class=""></i><p>Categorias</p></a>
                     <div class="collapse" id="grupo-categoria">
                         <a href="#" class="list-group-item"><p id="cat1">Kichute na grama</p></a>
                         <a href="#" class="list-group-item"><p id="cat2">Futebol com a mao</p></a>
@@ -27,39 +27,8 @@
                 </li>
 
                 <li>
-                    <a href="user.html">
-                        <i class="pe-7s-user"></i>
-                        <p>User Profile</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="table.html">
-                        <i class="pe-7s-note2"></i>
-                        <p>Table List</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="typography.html">
-                        <i class="pe-7s-news-paper"></i>
-                        <p>Typography</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="pe-7s-science"></i>
-                        <p>Icons</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="maps.php">
-                        <i class="pe-7s-map-marker"></i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="notifications.html">
-                        <i class="pe-7s-bell"></i>
-                        <p>Notifications</p>
+                    <a href="mCategoria.php">
+                        <p>Categorias</p>
                     </a>
                 </li>
             </ul>
@@ -70,13 +39,13 @@
         <nav class="navbar navbar-default navbar-fixed">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Bem Vindo Fulano de Tal!</a>
+                    <a class="navbar-brand" href="#">Bem Vindo <?php echo $_SESSION["nome"]; ?></a>
                 </div>
                 <div class="collapse navbar-collapse">
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="#">
+                            <a href="../../controller/ControllerLogin.php?acao=logout">
                                 Log out
                             </a>
                         </li>
@@ -84,12 +53,3 @@
                 </div>
             </div>
         </nav>
-
-
-        <div class="content">
-            <div class="container-fluid">
-
-            </div>
-        </div>
-    </div>
-</div>

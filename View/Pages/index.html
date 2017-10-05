@@ -54,14 +54,11 @@
                     // Request scopes in addition to 'profile' and 'email'
                     //scope: 'additional_scope'
                 });
-                console.log(auth2);
                 attachSignin(document.getElementById('customBtn'));
             });
         };
 
         function attachSignin(element) {
-            console.log("element id");
-            console.log(element.id);
             auth2.attachClickHandler(element, {},
                 function(googleUser) {
                     document.getElementById('name').innerText = "Signed in: " +
@@ -218,7 +215,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Email</label>
-                                                <input type="email" class="form-control" placeholder="Email" name="email">
+                                                <input type="text" class="form-control" placeholder="Email" name="email">
                                             </div>
                                         </div>
                                     </div>
@@ -251,6 +248,40 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="modalAddNovoLugar" tabindex="-1" role="dialog" aria-labelledby="modalAddNovoLugarLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAddNovoLugarLabel" style="font-weight: bold; text-size: 30px;">Adicionar Novo Lugar</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="ControllerLogin.php" method="post" id="formAddNovoLugar">
+                            <div class="form-group">
+                                <label class="form-control-label">Nome:</label>
+                                <input type="text" class="form-control" id="nomeNovoLugar"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Categoria:</label>
+                                <div id="catNovoLugar"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Descrição:</label>
+                                <textarea class="form-control" id="descNovoLugar" rows="4">
+                                </textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="novoLugar">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!--<footer class="footer">-->
             <!--<div class="container-fluid">-->
@@ -307,6 +338,7 @@
 <!-- endbuild -->
 
 <!-- build:js -->
+<script src="../Components/Js/init.js"></script>
 <script src="../Components/Js/init2.js"></script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-M0IMpBPaMnq6OA55g6S9c0FT08WDf5w&callback=initMap" ></script>
@@ -320,16 +352,28 @@
 <script>
     $("document").ready(function(){
        $("#formCriarConta").submit(function(){
-           alert("submitou");
-           var data = {"acao":"criarConta"};
-           data = $(this).serialize()+"&"+$.param(data);
+           var data = $(this).serialize()+"&acao=criarConta";
            $.ajax({
                type: "POST",
-               dataType: "json",
                url: "../../controller/ControllerLogin.php",
                data: data,
                success: function(data){
-                   alert("Cadastrado com sucesso!");
+                   $('#formCriarConta').trigger("reset");
+                   $.notify({
+                       title: '<strong>Sucesso!</strong>',
+                       message: 'Cadastro efetuado com êxito.'
+                   },{
+                       delay: 3000,
+                       type: "success",
+                       placement:{
+                           from: "top",
+                           align: "left"
+                       }
+                   });
+               },
+               error: function (xhr, ajaxOptions, thrownError) {
+                   alert(xhr.status);
+                   alert(thrownError);
                }
            });
            return false;

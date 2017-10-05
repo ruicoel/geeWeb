@@ -1,5 +1,6 @@
 <?php
 require_once '../models/Usuario.php';
+require_once '../models/TipoUsuario.php';
 require_once '../dao/DaoUsuario.php';
 
 $cLogin = new ControllerLogin;
@@ -27,18 +28,44 @@ class ControllerLogin
             $this->logar();
         }else if($acao == "criarConta"){
             $this->criarConta();
+        }else if($acao == "logout"){
+            $this->logout();
         }
     }
 
     public function logar(){
         $this->daoUsuario = new DaoUsuario;
         $usuario = new Usuario;
-        $usuario->setLogin($_POST["login"]);
-        $usuario->setSenha($_POST["senha"]);
+        $usuario->setEmail($_POST["login"]);
+        $usuario->setSenha(md5($_POST["senha"]));
 
-        var_dump($this->daoUsuario->findUsuario($usuario));
+        $usuario = $this->daoUsuario->findUsuario($usuario);
+        if($usuario->getId() != null){
+            if(!isset($_SESSION)){
+                session_start();
+                $_SESSION['email'] = $usuario->getEmail();
+                $_SESSION['nome'] = $usuario->getNome();
+                $_SESSION['senha'] = $usuario->getSenha();
+            }
+            header('Location:../View/Pages/home.php');
+        }
     }
     public function criarConta(){
-        return "chegou";
+        $this->daoUsuario = new DaoUsuario;
+        $usuario = new Usuario;
+        $usuario->setNome($_POST["nome"]);
+        $usuario->setEmail($_POST["email"]);
+        $usuario->setSenha(md5($_POST["senha"]));
+        $usuario->setTipo(TipoUsuario::COMUM);
+
+        $retorno = $this->daoUsuario->inserir($usuario);
+
+        return $retorno;
+    }
+
+    public function logout(){
+        session_start();
+        session_destroy();
+        header('Location:../View/Pages/index.html');
     }
 }
