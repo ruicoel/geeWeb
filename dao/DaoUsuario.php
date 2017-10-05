@@ -42,4 +42,76 @@ class DaoUsuario{
             echo "Erro: ".$ex->getMessage();
         }
     }
+
+    public function listar($inicio, $fim){
+        try{
+            $db = DatabaseConnection::conexao();
+            $vetUsuario = null;
+            $stmt = $db->query("SELECT * FROM gee.usuario order by id desc OFFSET ".$inicio." LIMIT ".$fim);
+            foreach ($stmt as $row){
+                $usuario = new Usuario;
+                $usuario->setId($row["id"]);
+                $usuario->setNome($row["nome"]);
+                $usuario->setEmail($row["email"]);
+                $usuario->setTipo($row["tipo"]);
+                $vetUsuario[] = $usuario;
+            }
+            return $vetUsuario;
+        }catch ( PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+
+    }
+    public function findByName($nome, $inicio, $fim){
+        try{
+            $db = DatabaseConnection::conexao();
+            $vetUsuario = null;
+            $stmt = $db->query("SELECT * FROM gee.usuario WHERE nome like '%".$nome."%' ORDER BY id DESC OFFSET ".$inicio." LIMIT ".$fim);
+            foreach ($stmt as $row){
+                $usuario = new Usuario;
+                $usuario->setId($row["id"]);
+                $usuario->setNome($row["nome"]);
+                $usuario->setEmail($row["email"]);
+                $usuario->setTipo($row["tipo"]);
+                $vetUsuario[] = $usuario;
+            }
+            return $vetUsuario;
+        }catch ( PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+
+    }
+    public function excluir($id){
+        try{
+            $db = DatabaseConnection::conexao();
+            $db->exec("DELETE FROM gee.usuario where id = " . $id);
+            return true;
+        }catch ( PDOException $ex ){
+            echo "Erro: ".$ex->getMessage();
+        }
+    }
+
+    public function alterar($usuario){
+        try{
+            $db = DatabaseConnection::conexao();
+            $senha = $usuario->getSenha();
+            if($senha!=null){
+                $stmt = $db->prepare("UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo, senha = :senha WHERE id = :id" );
+                $stmt->bindValue(":senha", $usuario->getSenha());
+            }else{
+                $stmt = $db->prepare("UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo WHERE id = :id");
+            }
+            $stmt->bindValue(":nome", $usuario->getNome());
+            $stmt->bindValue(":email", $usuario->getEmail());
+            $stmt->bindValue(":tipo", $usuario->getTipo());
+            $stmt->bindValue(":id", $usuario->getId());
+
+
+            $stmt->execute();
+            return true;
+        }catch (PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+    }
+
 }

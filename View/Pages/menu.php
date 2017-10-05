@@ -18,17 +18,21 @@
             <ul class="nav">
 
                 <li>
-                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><i class=""></i><p>Categorias</p></a>
+                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><i class=""></i><p>Locais</p></a>
                     <div class="collapse" id="grupo-categoria">
-                        <a href="#" class="list-group-item"><p id="cat1">Kichute na grama</p></a>
-                        <a href="#" class="list-group-item"><p id="cat2">Futebol com a mao</p></a>
-                        <a href="#" class="list-group-item"><p id="cat3">Golf</p></a>
+                        <a href="#" class="list-group-item"><p id="cat1">Autorização</p></a>
                     </div>
                 </li>
 
                 <li>
                     <a href="mCategoria.php">
-                        <p>Categorias</p>
+                        <p><span class="glyphicon glyphicon-tag"></span> Categorias</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="mUsuario.php">
+                        <p><span class="glyphicon glyphicon-user"></span> Usuários</p>
                     </a>
                 </li>
             </ul>
@@ -46,7 +50,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="../../controller/ControllerLogin.php?acao=logout">
-                                Log out
+                              <span class="glyphicon glyphicon-log-out"></span> Sair
                             </a>
                         </li>
                     </ul>

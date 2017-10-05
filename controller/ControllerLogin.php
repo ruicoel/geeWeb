@@ -47,7 +47,9 @@ class ControllerLogin
                 $_SESSION['nome'] = $usuario->getNome();
                 $_SESSION['senha'] = $usuario->getSenha();
             }
-            header('Location:../View/Pages/home.php');
+           print_r('/View/Pages/home.php');
+        }else{
+            print_r(false);
         }
     }
     public function criarConta(){
