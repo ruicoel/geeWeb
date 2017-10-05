@@ -82,8 +82,8 @@ lbd = {
             sidebar_color = $sidebar.data('color');
 
             $logo = $sidebar.find('.logo').first();
-            logo_content = $logo[0].outerHTML;
-
+            //logo_content = $logo[0].outerHTML;
+            logo_content = $logo.html();
             ul_content = '';
 
             $navbar.attr('data-color',sidebar_color);

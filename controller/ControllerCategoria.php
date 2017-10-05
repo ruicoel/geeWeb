@@ -57,7 +57,7 @@ class ControllerCategoria
     public function listaIndex(){
         $retorno = "";
         $daoCategoria = new DaoCategoria();
-        $vetCategoria = $daoCategoria->listar();
+        $vetCategoria = $daoCategoria->listarTodos();
         if(isset($vetCategoria)){
             foreach($vetCategoria as $categoria) {
                 $retorno .= "<span class='button-checkbox'>

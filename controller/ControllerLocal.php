@@ -1,5 +1,6 @@
 <?php
     require_once "../models/Local.php";
+    require_once "../models/Imagem.php";
     require_once "../models/LocalCategoria.php";
     require_once '../dao/DaoLocal.php';
 
@@ -42,14 +43,15 @@ class ControllerLocal
     public function cadastrar(){
         $daoLocal   = new DaoLocal();
         $loc        = new Local();
-        $catLocal   = new LocalCategoria();
+        $image = new Imagem();
+        $categorias = $_POST['cat'];
+        $loc        -> setNome($_POST["nomeLocal"]);
+        $loc        -> setPrivado($_POST["privado"]);
+        $loc        -> setDescricao($_POST["descLocal"]);
+        $loc        -> setPonto($_POST["ponto"]);
+        $image->setArquivo(file_get_contents($_FILES['arquivo']['tmp_name']));
 
-        $loc        -> setNome($_GET["nome"]);
-        $catLocal   -> setIdCategoria($_GET["categoria"]);
-        $loc        -> setDescricao($_GET["descricao"]);
-        $loc        -> setPonto($_GET["ponto"]);
-
-        $retorno = $daoLocal->inserir($loc, $catLocal);
+        $retorno = $daoLocal->inserir($loc, $categorias, $image);
 
         return $retorno;
     }

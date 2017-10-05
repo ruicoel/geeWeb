@@ -1,7 +1,7 @@
 <?php session_start();
 if (!isset($_SESSION['email']) || (!isset($_SESSION['senha']))) {
     session_destroy();
-    header("Location: index.html");
+    header("Location: index.php");
 }
 ?>
 
@@ -29,6 +29,9 @@ if (!isset($_SESSION['email']) || (!isset($_SESSION['senha']))) {
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+<!-- Toggle -->
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 <!--     Fonts and icons     -->
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">

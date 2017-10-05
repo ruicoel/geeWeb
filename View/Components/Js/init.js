@@ -1,3 +1,20 @@
+
+function trazerCategorias() {
+    var data = "&acao=listarIndex";
+    $.ajax({
+        type: "POST",
+        url: "../../controller/ControllerCategoria.php",
+        data: data,
+        success: function(result){
+            $("#catNovoLugar").html(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status);
+            console.log(thrownError);
+        }
+    });
+}
+
 $(function() {
     $( "#login" ).button().on( "click", function() {
         $("#dialog-form").dialog({
@@ -29,24 +46,6 @@ $(function() {
         console.log('Image URL: '   + profile.getImageUrl());
         console.log('Email: '       + profile.getEmail()); // This is null if the 'email' scope is not present.
     }
-
-    function trazerCategorias() {
-        var data = "&acao=listarIndex";
-        $.ajax({
-            type: "POST",
-            url: "../../controller/ControllerCategoria.php",
-            data: data,
-            success: function(result){
-                $("#catNovoLugar").html(result);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr.status);
-                console.log(thrownError);
-            }
-        });
-    }
-
-
     trazerCategorias();
 });
 
@@ -256,4 +255,14 @@ function categoriasCheckbox() {
         });
     },1000)
 }
+
+$(document).ready(function(){
+    $('#modalAddNovoLugar').on('hidden.bs.modal', function(){
+        $('#formAddNovoLugar').trigger("reset");
+        $('.button-checkbox').html("<button type='button' id='btnPrivado' class='btn btn-warning' data-color='warning'><span id='textPrivado'>Público</span></button><input type='checkbox' class='hidden' name='privado' value='0'/>");
+        $('#input-images').fileinput('reset');
+        trazerCategorias();
+        categoriasCheckbox();
+    });
+});
 

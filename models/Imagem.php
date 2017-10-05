@@ -11,6 +11,7 @@ class Imagem
     private $id;
     private $arquivo;
     private $idAmbiente;
+    private $idLocal;
 
     /**
      * @return mixed
@@ -58,6 +59,22 @@ class Imagem
     public function setIdAmbiente($idAmbiente)
     {
         $this->idAmbiente = $idAmbiente;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdLocal()
+    {
+        return $this->idLocal;
+    }
+
+    /**
+     * @param mixed $idLocal
+     */
+    public function setIdLocal($idLocal)
+    {
+        $this->idLocal = $idLocal;
     }
 
 

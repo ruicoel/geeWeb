@@ -24,6 +24,25 @@ class DaoCategoria
 
     }
 
+    public function listarTodos(){
+        try{
+            $db = DatabaseConnection::conexao();
+            $vetCategoria = null;
+            $stmt = $db->query("SELECT * FROM gee.categoria order by id");
+            foreach ($stmt as $row){
+                $categoria = new Categoria;
+                $categoria->setId($row["id"]);
+                $categoria->setDescricao($row["nome"]);
+                $categoria->setCor($row["cor"]);
+                $vetCategoria[] = $categoria;
+            }
+            return $vetCategoria;
+        }catch ( PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+
+    }
+
     public function excluir($id){
         try{
             $db = DatabaseConnection::conexao();

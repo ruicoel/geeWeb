@@ -46,8 +46,13 @@ class ControllerLogin
                 $_SESSION['email'] = $usuario->getEmail();
                 $_SESSION['nome'] = $usuario->getNome();
                 $_SESSION['senha'] = $usuario->getSenha();
+                $_SESSION['tipo'] = $usuario->getTipo();
             }
-           print_r('/View/Pages/home.php');
+            if($usuario->getTipo() == TipoUsuario::MODERADOR) {
+                print_r('/View/Pages/home.php');
+            }else if($usuario->getTipo() == TipoUsuario::COMUM){
+                print_r('/View/Pages/index.php');
+            }
         }else{
             print_r(false);
         }
@@ -68,6 +73,6 @@ class ControllerLogin
     public function logout(){
         session_start();
         session_destroy();
-        header('Location:../View/Pages/index.html');
+        header('Location:../View/Pages/index.php');
     }
 }

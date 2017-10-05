@@ -23,7 +23,8 @@
     <!--  Light Bootstrap Table core CSS    -->
     <link href="../Components/Bootstrap/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
 
-    <!--<link rel="stylesheet" href="../Components/JQuery/jquery-ui-1.12.1/*.css">-->
+    <link rel="stylesheet" href="../Components/JQuery/file-input/css/fileinput.min.css"/>
+
 
     <style>
          #banner{
@@ -130,36 +131,47 @@
                     M O V I M E N T O
                 </ul>
                 <ul class="nav navbar-nav navbar-right login">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle btnLogin" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login <b class="caret"></b></a>
-                        <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
-                            <li>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <form class="form" role="form" method="post" action="../../controller/ControllerLogin.php" accept-charset="UTF-8" id="login-nav">
-                                            <div class="form-group">
-                                                <label class="sr-only" for="email_pop_up">Email address</label>
-                                                <input type="email" class="form-control" id="email_pop_up" placeholder="Email" name="login" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="senha_pop_up">Password</label>
-                                                <input type="password" class="form-control" id="senha_pop_up" placeholder="Password" name="senha" required>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> Lembrar-me
-                                                </label>
-                                            </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-success btn-block">Logar</button>
-                                            </div>
-                                            <input type="hidden" name="acao" value="logar"/>
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                        </ul>
+                        <?php
+                        require_once "../../models/TipoUsuario.php";
+                        session_start();
+                        if(isset($_SESSION['nome'])){
+                            echo '<li><a href="../../controller/ControllerLogin.php?acao=logout" style="color: white !important;">'.
+                              '<span class="glyphicon glyphicon-log-out"></span> Sair'.
+                            '</a>'.
+                        '</li>';
+                        }else{
+                            echo ' <li class="dropdown">'.
+                                '<a class="dropdown-toggle btnLogin" data-toggle="dropdown"><span class="glyphicon glyphicon-log-in"></span> Login <b class="caret"></b></a>'.
+                                '<ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">' .
+                                '<li>' .
+                                '<div class="row">' .
+                                '<div class="col-md-12">' .
+                                '<form class="form" role="form" method="post" action="../../controller/ControllerLogin.php" accept-charset="UTF-8" id="login-nav">' .
+                                '<div class="form-group">' .
+                                '<label class="sr-only" for="email_pop_up">Email address</label>' .
+                                '<input type="email" class="form-control" id="email_pop_up" placeholder="Email" name="login" required>' .
+                                '</div>' .
+                                '<div class="form-group">' .
+                                '<label class="sr-only" for="senha_pop_up">Password</label>' .
+                                '<input type="password" class="form-control" id="senha_pop_up" placeholder="Password" name="senha" required>' .
+                                '</div>' .
+                                '<div class="checkbox">' .
+                                '<label>' .
+                                '<input type="checkbox"> Lembrar-me' .
+                                '</label>' .
+                                '</div>' .
+                                '<div class="form-group">' .
+                                '<button type="submit" class="btn btn-success btn-block">Logar</button>' .
+                                '</div>' .
+                                '<input type="hidden" name="acao" value="logar"/>' .
+                                '</form>' .
+                                '</div>' .
+                                '</div>' .
+                                '</li>' .
+                                '<li class="divider"></li>' .
+                                '</ul>';
+                        }
+                        ?>
                     </li>
                 </ul>
 
@@ -227,9 +239,9 @@
                             </form>
                             <hr>
                             <div class="text-center">
-                                <button href="#" class="btn btn-simple"><i class="fa fa-facebook-square"></i></button>
+                               <!-- <button href="#" class="btn btn-simple"><i class="fa fa-facebook-square"></i></button>
                                 <button href="#" class="btn btn-simple"><i class="fa fa-twitter"></i></button>
-                                <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>
+                                <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>-->
 
                             </div>
                         </div>
@@ -250,63 +262,43 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="ControllerLogin.php" method="post" id="formAddNovoLugar">
+                    <form action="ControllerLogin.php" method="post" id="formAddNovoLugar" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="form-control-label">Selecione as fotos:</label>
+                                <input id="input-images" name="arquivo" type="file" class="file-loading" multiple>
+                            </div>
                             <div class="form-group">
                                 <label class="form-control-label">Nome:</label>
-                                <input type="text" class="form-control" id="nomeNovoLugar"/>
+                                <input type="text" class="form-control" name="nomeLocal" id="nomeLocal"/>
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">Categoria:</label>
                                 <div id="catNovoLugar"></div>
                             </div>
+                            <div class="form-group checkPrivado">
+                                <label class="form-control-label">Privado/Público:</label>
+                                <div class='button-checkbox'>
+                                  <button type='button' id="btnPrivado" class='btn btn-warning' data-color='warning'>
+                                      <span id="textPrivado">Público</span>
+                                  </button>
+                                  <input type='checkbox' class='hidden' name='privado' value='0'/>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="form-control-label">Descrição:</label>
-                                <textarea class="form-control" id="descNovoLugar" rows="4">
-                                </textarea>
+                                <textarea class="form-control" name="descLocal" rows="4"></textarea>
                             </div>
-                        </form>
+
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <input type="hidden" name="acao" value="cadastrar"/>
+                        <button type="button" class="btn btn-secondary btnCloseModal" data-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal" id="novoLugar">Salvar</button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <!--<footer class="footer">-->
-            <!--<div class="container-fluid">-->
-                <!--<nav class="pull-left">-->
-                    <!--<ul>-->
-                        <!--<li>-->
-                            <!--<a href="#">-->
-                                <!--Home-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href="#">-->
-                                <!--Company-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href="#">-->
-                                <!--Portfolio-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href="#">-->
-                                <!--Blog-->
-                            <!--</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</nav>-->
-                <!--<p class="copyright pull-right">-->
-                    <!--&copy; 2016 <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web-->
-                <!--</p>-->
-            <!--</div>-->
-        <!--</footer>-->
-
-
 </div>
 
 
@@ -331,6 +323,7 @@
 <!-- build:js -->
 <script src="../Components/Js/init.js"></script>
 <script src="../Components/Js/init2.js"></script>
+<script src="../Components/JQuery/file-input/js/fileinput.min.js"></script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-M0IMpBPaMnq6OA55g6S9c0FT08WDf5w&callback=initMap" ></script>
 
@@ -342,6 +335,14 @@
 <script src="../Components/Bootstrap/js/bootstrap-notify.js"></script>
 <script>
     $("document").ready(function(){
+        $('#btnPrivado').removeClass('btn-default');
+        $('#btnPrivado').addClass('btn-success');
+        $('#input-images').fileinput({
+            allowedFileTypes: ["image"],
+            maxFileCount: 1,
+            showUpload: false,
+            showCaption: false
+        });
        $("#formCriarConta").submit(function(){
            var data = $(this).serialize()+"&acao=criarConta";
            $.ajax({
@@ -390,7 +391,7 @@
                             }
                         });
                     }else{
-                        $(location).attr('href', '/View/Pages/home.php');
+                        $(location).attr('href', data);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
@@ -400,6 +401,18 @@
             });
             return false;
         });
+        $(document).on("click", "#btnPrivado", function(){
+            if($('input[name="privado"]:checked').length > 0){
+                $('input[name="privado"]').val(1);
+                $('#textPrivado').html("Privado");
+            }else{
+                $('input[name="privado"]').val(0);
+                $('#textPrivado').html("Público");
+                $('#btnPrivado').removeClass('btn-default');
+                $('#btnPrivado').addClass('btn-success');
+            }
+        });
+
     });
 </script>
 </html>
