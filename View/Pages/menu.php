@@ -18,9 +18,11 @@
             <ul class="nav">
 
                 <li>
-                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><i class=""></i><p>Locais</p></a>
+                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><p> <span class="glyphicon glyphicon-globe"></span> Locais</p></a>
                     <div class="collapse" id="grupo-categoria">
-                        <a href="#" class="list-group-item"><p id="cat1">Autorização</p></a>
+                        <a href="mLocalAmbiente.php" class="list-group-item">
+                            <p id="cat1"> <span class="glyphicon glyphicon-map-marker"></span> Meus Locais</p>
+                        </a>
                     </div>
                 </li>
 

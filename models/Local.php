@@ -111,6 +111,18 @@ class Local
         $this->privado = $privado;
     }
 
+    public function jsonSerialize() {
+        $obj =  [
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'descricao' => $this->descricao,
+            'ponto' => $this->ponto,
+            'ativo' => $this->ativo,
+            'privado' => $this->privado
+        ];
+
+        return $obj;
+    }
 
 
 }

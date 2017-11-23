@@ -24,6 +24,28 @@ class DaoCategoria
 
     }
 
+    public function findByLocal($idLocal){
+        try{
+            $db = DatabaseConnection::conexao();
+            $vetCategoria = null;
+            $stmt = $db->query("SELECT lc.* FROM gee.local_categoria lc WHERE lc.id_local = ".$idLocal);
+            foreach ($stmt as $row){
+                $query = $db->prepare("SELECT * FROM gee.categoria WHERE id = ".$row["id_categoria"]);
+                $query->execute();
+                $result =  $query->fetch(PDO::FETCH_ASSOC);
+                $categoria = new Categoria;
+                $categoria->setId($result["id"]);
+                $categoria->setDescricao($result["nome"]);
+                $categoria->setCor($result["cor"]);
+                $vetCategoria[] = $categoria;
+            }
+            return $vetCategoria;
+        }catch ( PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+
+    }
+
     public function listarTodos(){
         try{
             $db = DatabaseConnection::conexao();

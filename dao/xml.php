@@ -24,9 +24,9 @@ echo '<markers>';
 // Iterate through the rows, printing XML nodes for each
 foreach ($stmt as $row){
     // Add to XML document node
-    $stmtImagem = $db->prepare("SELECT id, arquivo FROM gee.imagem WHERE id_local = ".$row['id']);
+    /*$stmtImagem = $db->prepare("SELECT id, arquivo FROM gee.imagem WHERE id_local = ".$row['id']);
     $stmtImagem->execute();
-    $row2 =  $stmtImagem->fetch();
+    $row2 =  $stmtImagem->fetch();*/
 
     echo '<marker ';
     echo 'id="'       . parseToXML($row['id']) . '" ';

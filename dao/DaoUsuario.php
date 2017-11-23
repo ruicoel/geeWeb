@@ -16,7 +16,7 @@ class DaoUsuario{
             $user->setNome($result['nome']);
             $user->setEmail($result['email']);
             $user->setSenha($result['senha']);
-            $user->setTipo(TipoUsuario::getTipo($result['tipo']));
+            $user->setTipo($result['tipo']);
 
 
             return $user;
@@ -97,7 +97,7 @@ class DaoUsuario{
             $senha = $usuario->getSenha();
             if($senha!=null){
                 $stmt = $db->prepare("UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo, senha = :senha WHERE id = :id" );
-                $stmt->bindValue(":senha", $usuario->getSenha());
+              $stmt->bindValue(":senha", $usuario->getSenha());
             }else{
                 $stmt = $db->prepare("UPDATE gee.usuario SET nome = :nome, email = :email, tipo = :tipo WHERE id = :id");
             }
@@ -109,7 +109,7 @@ class DaoUsuario{
 
             $stmt->execute();
             return true;
-        }catch (PDOException $ex){
+        }catch(PDOException $ex){
             echo "Erro: ".$ex->getMessage();
         }
     }

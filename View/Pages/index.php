@@ -1,3 +1,5 @@
+<?php
+session_start();?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -125,7 +127,7 @@
 <body style="background-color: #F3F3F4">
 
 <div class="wrapper">
-        <nav class="navbar navbar-default navbar-fixed" id="banner">
+        <nav class="navbar navbar-default navbar-fixed" style="border-radius: 3px !important;" id="banner">
             <div class="container-fluid">
                 <ul class="nav navbar-nav navbar-left logo">
                     M O V I M E N T O
@@ -133,7 +135,6 @@
                 <ul class="nav navbar-nav navbar-right login">
                         <?php
                         require_once "../../models/TipoUsuario.php";
-                        session_start();
                         if(isset($_SESSION['nome'])){
                             echo '<li><a href="../../controller/ControllerLogin.php?acao=logout" style="color: white !important;">'.
                               '<span class="glyphicon glyphicon-log-out"></span> Sair'.
@@ -181,7 +182,7 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-8">
+                    <?php if(isset($_SESSION['nome'])){echo '<div class="col-md-12">';}else{echo '<div class="col-md-8">';} ?>
                         <div class="card">
                             <div class="header">
                                 <label>Encontre o seu lugar para emagrecer</label>
@@ -193,59 +194,50 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card card-user">
-                            <form action="ControllerLogin.php" method="POST" id="formCriarConta">
-                                <div class="content">
-                                    <p>Crie sua Conta</p>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Nome</label>
-                                                <input type="text" class="form-control" placeholder="Nome" name="nome">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Senha</label>
-                                                <input type="password" class="form-control" placeholder="Senha" name="senha">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Email</label>
-                                                <input type="text" class="form-control" placeholder="Email" name="email">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <!--<input type="hidden" name="acao" value="criarConta"/>-->
-                                                <input type="submit" value="Criar Conta" class="btn btn-fill" id="btn_criar_conta"/>
-                                            </div>
-                                        </div>
-                                       <!-- <div class="col-md-6">
-                                            <div class="form-group ">
-                                                <button type="button"  class="btn btn-fill" id="btn_fazer_login">Fazer Login</button>
-                                            </div>
-                                        </div>-->
-                                    </div>
-                                </div>
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                               <!-- <button href="#" class="btn btn-simple"><i class="fa fa-facebook-square"></i></button>
-                                <button href="#" class="btn btn-simple"><i class="fa fa-twitter"></i></button>
-                                <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>-->
+                    <?php
 
-                            </div>
-                        </div>
-                    </div>
+                    if(!isset($_SESSION['nome'])){
+                        echo '<div class="col-md-4">' .
+                            '<div class="card card-user">' .
+                            '<form action="ControllerLogin.php" method="POST" id="formCriarConta">' .
+                            '<div class="content">' .
+                            '<p>Crie sua Conta</p>' .
+                            '<div class="row">' .
+                            '     <div class="col-md-12">' .
+                            '          <div class="form-group">' .
+                            '               <label>Nome</label>' .
+                            '                <input type="text" class="form-control" placeholder="Nome" name="nome" required>' .
+                            '             </div>' .
+                            '          </div>' .
+                            '       </div>' .
+                            '        <div class="row">' .
+                            '             <div class="col-md-12">' .
+                            '   <div class="form-group">' .
+                            '        <label>Senha</label>' .
+                            '         <input type="password" class="form-control" placeholder="Senha" name="senha" required>' .
+                            '      </div>' .
+                            '   </div>' .
+                            '</div>' .
+                            ' <div class="row">' .
+                            ' <div class="col-md-12">' .
+                            '      <div class="form-group">' .
+                            '           <label>Email</label>' .
+                            '            <input type="text" class="form-control" placeholder="Email" name="email" required>' .
+                            '         </div>' .
+                            '      </div>' .
+                            '   </div>' .
+                            '    <div class="row">' .
+                            '         <div class="col-md-6">' .
+                            '              <div class="form-group">' .
+                            '                   <input type="submit" value="Criar Conta" class="btn btn-fill" id="btn_criar_conta"/>' .
+                            '                </div>' .
+                            '             </div>' .
+                            '      </div>' .
+                            '   </form>' .
+                            '</div>' .
+                            '</div>';
+                    }
+                ?>
 
                 </div>
             </div>
@@ -281,12 +273,12 @@
                                   <button type='button' id="btnPrivado" class='btn btn-warning' data-color='warning'>
                                       <span id="textPrivado">Público</span>
                                   </button>
-                                  <input type='checkbox' class='hidden' name='privado' value='0'/>
+                                  <input type='checkbox' class='hidden' id="chkPrivado" name='privado' value='0'/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-control-label">Descrição:</label>
-                                <textarea class="form-control" name="descLocal" rows="4"></textarea>
+                                <textarea class="form-control" name="descLocal" id="descLocal" rows="4"></textarea>
                             </div>
 
                     </div>
@@ -391,7 +383,13 @@
                             }
                         });
                     }else{
-                        $(location).attr('href', data);
+                        //alert(data);
+                        if(data == 1) {
+                            $(location).attr('href', '/View/Pages/home.php');
+                        }else if(data == 0){
+                            $(location).attr('href', '/View/Pages/index.php');
+                        }
+                        //alert(data);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {

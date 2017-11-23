@@ -219,16 +219,23 @@ function addPlace() {
 $(document).ready(function(){
    $(document).on('click', '#novoLugar', function (e) {
 
-       /*nome         = $('#nomeNovoLugar').val();
-       categoria    = $('input:checkbox:checked').map(function () { return this.value; }).get();
-       descricao    = $('#descNovoLugar').val();
+       /*nome         = $('#nomeLocal').val();
+       categoria    = $('input[name=cat]:checked').val();
+       descricao    = $('#descLocal').val();
        ponto        = latitude + ", " + longitude;
-
-       data = jQuery.param({ nome: nome, categoria : categoria, descricao: descricao, ponto: ponto})+"&acao=cadastrar";*/
+       privado = $('#chkPrivado').val();
+       data = jQuery.param({ nomeLocal: nome, cat : categoria, descLocal: descricao, ponto: ponto, privado: privado})+"&acao=cadastrar";
        var formData = new FormData($('#formAddNovoLugar')[0]);
-       ponto        = latitude + ", " + longitude;
+
        formData.append("ponto", ponto);
        console.log(formData.entries());
+       alert(formData.entrie)*/
+       ponto        = latitude + ", " + longitude;
+       var data = $('#formAddNovoLugar').serialize();
+       data += '&ponto='+ponto;
+       var formData = new FormData($('#formAddNovoLugar')[0]);
+       formData.append("ponto", ponto);
+       console.log(formData.getAll("arquivo"));
        $.ajax({
            type: "POST",
            url: "../../controller/ControllerLocal.php",
@@ -236,7 +243,18 @@ $(document).ready(function(){
            contentType: false,
            processData: false,
            success: function(result){
-               console.log(result);
+               /*console.log(result);*/
+               $.notify({
+                   title: '<strong>Local inserido com sucesso!</strong>',
+                   message: 'Aguarde a autorização para que seja possível encontrá-lo'
+               },{
+                   delay: 3000,
+                   type: "success",
+                   placement:{
+                       from: "top",
+                       align: "left"
+                   }
+               });
            },
            error: function (xhr, ajaxOptions, thrownError) {
                console.log(xhr.status);

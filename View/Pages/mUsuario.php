@@ -198,10 +198,9 @@
                 url: "../../controller/ControllerUsuario.php",
                 data: data,
                 success: function(data){
-                    alert(data);
-                  /*  $('#formUsuario').trigger("reset");
+                   $('#formUsuario').trigger("reset");
                     getitens(pagina, nitens);
-                    $('#modalUsuario').modal({show: 'false'});
+                    $('#modalUsuario').modal('toggle');
                     $.notify({
                         title: '<strong>Sucesso!</strong>',
                         message: 'Alteração efetuada com êxito.'
@@ -212,7 +211,7 @@
                             from: "top",
                             align: "left"
                         }
-                    });*/
+                    });
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.status);

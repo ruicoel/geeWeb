@@ -62,7 +62,7 @@ class ControllerCategoria
             foreach($vetCategoria as $categoria) {
                 $retorno .= "<span class='button-checkbox'>
                                 <button type='button' class='btn btn-primary' data-color='primary'>". $categoria->getDescricao() ."</button>
-                                <input type='checkbox' class='hidden' name='cat[]' id='cat' value='". $categoria->getId() ."'/>
+                                <input type='checkbox' class='hidden' name='cat[]' data-cat='".$categoria->getId()."' value='". $categoria->getId() ."'/>
                             </span>";
                 //$retorno .= "<option value='". $categoria->getId() ."'>". $categoria->getDescricao(). "</option>";
             }

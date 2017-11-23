@@ -77,10 +77,11 @@ class ControllerUsuario
             $usuario->setSenha(md5($_POST["senha"]));
         }
         $usuario->setTipo($_POST["tipo"]);
+        $usuario->setId($_POST["id"]);
 
         $retorno = $this->daoUsuario->alterar($usuario);
 
-        print_r(json_encode($usuario));
+        print_r($retorno);
     }
 
 
