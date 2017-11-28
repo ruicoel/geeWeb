@@ -37,6 +37,12 @@
                         <p><span class="glyphicon glyphicon-user"></span> Usuários</p>
                     </a>
                 </li>
+
+                <li>
+                    <a href="mMaps.php">
+                        <p><span class="glyphicon glyphicon-map-marker"></span> Locais para Aprovar</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

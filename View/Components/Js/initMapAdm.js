@@ -25,6 +25,14 @@ function initMap() {
             fillColor: '#38d8ff',
             fillOpacity: 1
         },
+
+        localInativo: {
+            name: "Local Inativo",
+            path: 'M0-48c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z',
+            strokeColor: '#f5f5ff',
+            fillColor: '#ff6e87',
+            fillOpacity: 1
+        },
         posicaoAtual : {
             name: "Posição Atual",
             url: 'https://cdn.iconscout.com/public/images/icon/premium/png-512/handsup-person-with-hands-up-raised-spectator-exercising-37d1cb8ce1925362-512x512.png',
@@ -62,12 +70,13 @@ function initMap() {
             });
 
             // Change this depending on the name of your PHP or XML file
-            downloadUrl('../../dao/xml.php', function(data) {
+            downloadUrl('../../dao/xmlAdm.php', function(data) {
                 var xml = data.responseXML;
                 markers = xml.documentElement.getElementsByTagName('marker');
                 Array.prototype.forEach.call(markers, function(markerElem) {
-                    var name = markerElem.getAttribute('nome');
-                    var id = markerElem.getAttribute('id');
+
+                    var name    = markerElem.getAttribute('nome');
+                    var id      = markerElem.getAttribute('id');
                     var address = markerElem.getAttribute('descricao');
 
                     //var type = markerElem.getAttribute('type');
@@ -75,18 +84,19 @@ function initMap() {
                         parseFloat(markerElem.getAttribute('lat')),
                         parseFloat(markerElem.getAttribute('lng')));
 
-                    var infowincontent = document.createElement('div');
-                    var strong = document.createElement('strong');
-                    strong.textContent = name
+                    var infowincontent  = document.createElement('div');
+                    var strong          = document.createElement('strong');
+                    strong.textContent  = name;
+
                     infowincontent.appendChild(strong);
                     infowincontent.appendChild(document.createElement('br'));
 
-                    var text = document.createElement('text');
-                    text.textContent = address
+                    var text            = document.createElement('text');
+                    text.textContent    = address
                     infowincontent.appendChild(text);
-                    var imagem = document.createElement("img");
+
+                    var imagem          = document.createElement("img");
                     infowincontent.appendChild(imagem);
-                    //alert(data.responseText);
                     var content22 = '<div id="iw-container">';
                     content22.concat('<div class="iw-title">'+markerElem.getAttribute('nome')+'</div>');
                     content22.concat('<div class="iw-content">');
@@ -97,23 +107,38 @@ function initMap() {
                     content22.concat('<div class="iw-bottom-gradient"></div>');
                     content22.concat('</div>');
 
+                    // var contentString = '<div class="info-window">' +
+                    //     '<h2>'+markerElem.getAttribute('nome')+'</h2>' +
+                    //     '<div class="info-content">' +
+                    //     '<p>'+markerElem.getAttribute('descricao')+'</p>';
+                    // if(markerElem.getAttribute('privado') == 0){
+                    //     contentString+= '<p><button type="button" class="btn btn-success btn-xs"> Público </button></p>';
+                    // }else {
+                    //     contentString+=  '<p><button type="button" class="btn btn-warning btn-xs"> Privado </button></p>';
+                    // }
+                    // contentString+=    '</div></div>';
                     var contentString = '<div class="info-window">' +
                         '<h2>'+markerElem.getAttribute('nome')+'</h2>' +
-                        '<div class="info-content">' +
-                        '<p>'+markerElem.getAttribute('descricao')+'</p>';
-                    if(markerElem.getAttribute('privado') == 0){
-                        contentString+= '<p><button type="button" class="btn btn-success btn-xs"> Público </button></p>';
-                    }else {
-                        contentString+=  '<p><button type="button" class="btn btn-warning btn-xs"> Privado </button></p>';
+                        '<div class="info-content">';
+                        contentString+= '<p><button style="width: 100%"; type="button" class="btn btn-primary btn-xl" id="detalhes"> Detalhes </button></p>';
+                        contentString+=    '</div></div>';
+
+                    if(markerElem.getAttribute('ativo') == 1){
+                        newMarker = new google.maps.Marker({
+                            map: map,
+                            position: point,
+                            icon: icons.localAtivo
+
+                        });
+                    } else {
+                        newMarker = new google.maps.Marker({
+                            map: map,
+                            position: point,
+                            icon: icons.localInativo
+                            //label: icon.label
+                        });
                     }
-                    contentString+=    '</div></div>';
-                    //var icon = customLabel[type] || {};
-                    newMarker = new google.maps.Marker({
-                        map: map,
-                        position: point,
-                        icon: icons.localAtivo
-                        //label: icon.label
-                    });
+
                     var infoWindow = new google.maps.InfoWindow({
                        content: contentString
                     });
@@ -124,7 +149,6 @@ function initMap() {
             });
             map.setCenter(pos);
 
-
         }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
         });
@@ -133,18 +157,18 @@ function initMap() {
         handleLocationError(false, infoWindow, map.getCenter());
     }
 
-
     var legend = document.getElementById('legend');
     for (var key in icons) {
         var type    = icons[key];
         var name    = type.name;
         var div     = document.createElement('div');
         var aux;
-        name == "Posição Atual" ? aux = 0 : aux = 1;
+        name == "Posição Atual" ? aux = 1 : (name != "Local Ativo" ? aux = 2 : aux = 0);
         var icon = name != "Posição Atual" ? type.path : type.url;
 
-        if      (aux == 1)  div.innerHTML = '</br><svg baseProfile="basic" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g stroke="white" fill="#38d8ff"><path  d="M24 0c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z"></path></g></svg> '+ name;
-        else if (aux == 0)  div.innerHTML = '</br><img style="width: 48px; height: 48px" src="' + icon + '"> ' + name;
+        if      (aux == 0)  div.innerHTML = '</br><svg baseProfile="basic" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g stroke="white" fill="#38d8ff"><path  d="M24 0c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z"></path></g></svg> '+ name;
+        else if (aux == 2)  div.innerHTML = '</br><svg baseProfile="basic" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g stroke="white" fill="#ff6e87"><path  d="M24 0c-9.8 0-17.7 7.8-17.7 17.4 0 15.5 17.7 30.6 17.7 30.6s17.7-15.4 17.7-30.6c0-9.6-7.9-17.4-17.7-17.4z"></path></g></svg> '+ name;
+        else if (aux == 1)  div.innerHTML = '</br><img style="width: 48px; height: 48px" src="' + icon + '"> ' + name;
 
         legend.appendChild(div);
     }
@@ -172,55 +196,6 @@ function downloadUrl(url, callback) {
 
 function doNothing() {}
 
-
-
-
-// var formStr = "<div class='container' id='divAdd' style='width: 200px'><spam style='text-align: center; font-weight: bold;'>Deseja adicionar esse local?</spam></br><input class='btn btn-primary' type='button' id='btnAddNovoLugar' data-toggle=\"modal\" data-target=\"#modalAddNovoLugar\" style='margin-top: 20px;' value='Sim'/><input class='btn btn-danger' type='button' id='btnNaoAdd' style='margin-left: 45px; margin-top: 20px;' value='Não'/></div>"
-// var latitude;
-// var longitude;
-//
-// function initMap() {
-//     var map = new google.maps.Map(document.getElementById('map'), {
-//         center: {lat: -34.397, lng: 150.644},
-//         zoom: 15
-//     });
-//
-//     // Try HTML5 geolocation.
-//     if (navigator.geolocation) {
-//         navigator.geolocation.getCurrentPosition(function(position) {
-//             var pos = {
-//                 lat: position.coords.latitude,
-//                 lng: position.coords.longitude
-//             };
-//
-//             var marker      = new google.maps.Marker({
-//                 icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-//                 position: pos,
-//                 map: map,
-//                 title: 'Hello World!'
-//             });
-//
-//             var infowindow = new google.maps.InfoWindow();
-//
-//             google.maps.event.addListener(map, 'click', function (e) {
-//                 infowindow.setContent(formStr);
-//                 infowindow.setPosition(e.latLng);
-//                 latitude    = e.latLng.lat();
-//                 longitude   = e.latLng.lng();
-//                 infowindow.open(map);
-//             });
-//
-//             map.setCenter(pos);
-//
-//         }, function() {
-//             handleLocationError(true, infoWindow, map.getCenter());
-//         });
-//     } else {
-//         // Browser doesn't support Geolocation
-//         handleLocationError(false, infoWindow, map.getCenter());
-//     }
-// }
-//
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
@@ -240,26 +215,12 @@ function addPlace() {
         infowindow.setContent(this.htmlContent);
         infowindow.open(map,marker);
     });
-    // google.maps.event.addListener(marker, 'rightclick', function() {
-    //     this.setMap(null);
-    // });
 }
 
 
 $(document).ready(function(){
    $(document).on('click', '#novoLugar', function (e) {
 
-       /*nome         = $('#nomeLocal').val();
-       categoria    = $('input[name=cat]:checked').val();
-       descricao    = $('#descLocal').val();
-       ponto        = latitude + ", " + longitude;
-       privado = $('#chkPrivado').val();
-       data = jQuery.param({ nomeLocal: nome, cat : categoria, descLocal: descricao, ponto: ponto, privado: privado})+"&acao=cadastrar";
-       var formData = new FormData($('#formAddNovoLugar')[0]);
-
-       formData.append("ponto", ponto);
-       console.log(formData.entries());
-       alert(formData.entrie)*/
        ponto        = latitude + ", " + longitude;
        var data = $('#formAddNovoLugar').serialize();
        data += '&ponto='+ponto;
@@ -294,15 +255,15 @@ $(document).ready(function(){
        addPlace();
        infowindow.close();
        newMarker.setMap(map);
-       //google.maps.event.trigger(map, 'resize');
-       //try {google;} catch (e){location.reload();}
-
    });
 
 
 
    $(document).on('click', '#btnNaoAdd', function () {
        infowindow.close();
-       //$("#divAdd").hide();
+   });
+   //Aqui no on click do botao de detalhes
+   $(document).on('click', '#detalhes', function () {
+       console.log("clicado");
    });
 });

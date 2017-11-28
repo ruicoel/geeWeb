@@ -190,7 +190,7 @@ session_start();?>
                             </div>
                             <div class="content">
                                 <div id="map" style="height: 600px; width: 100%"></div>
-                                
+                                <div id="legend"><h3>Legenda</h3></div>
                             </div>
                         </div>
                     </div>
