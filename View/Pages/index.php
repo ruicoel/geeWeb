@@ -291,12 +291,39 @@ session_start();?>
                 </div>
             </div>
         </div>
+
+<!-- Modal -->
+<div class="modal fade multi-step" id="modalAgenda" tabindex="-1" role="dialog" aria-labelledby="modalAgenda" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="js-title-step" id="modalAgendaLabel">Agendar horário</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" data-step="1" data-title="First Step"></div>
+                <div class="row" style="display: none;" data-step="2" data-title="Second Step"></div>
+                <div class="row" style="display: none;" data-step="3" data-title="Third Step"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning btn-prev pull-left">Voltar</button>
+                <button type="button" class="btn btn-default btn-close-agenda" data-orientation="cancel" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-success btn-next">Next</button>-->
+            </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
 </div>
-
-
+</div>
 </body>
 
+<script>
 
+</script>
 <!--   Core JS Files   -->
 <!-- build:jquery -->
 <script src="../Components/JQuery/jquery-3.2.1.min.js" type="text/javascript"></script>
@@ -315,6 +342,7 @@ session_start();?>
 <!-- build:js -->
 <script src="../Components/Js/init.js"></script>
 <script src="../Components/Js/init2.js"></script>
+<!--<script src="../Components/Js/multi-step-modal.js"></script>-->
 <script src="../Components/JQuery/file-input/js/fileinput.min.js"></script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-M0IMpBPaMnq6OA55g6S9c0FT08WDf5w&callback=initMap" ></script>
@@ -327,6 +355,90 @@ session_start();?>
 <script src="../Components/Bootstrap/js/bootstrap-notify.js"></script>
 <script>
     $("document").ready(function(){
+        var count = 1;
+        $('.btn-close-agenda').on('click', function () {
+            $('[data-step="1"]').show();
+            $('[data-step="2"]').hide();
+            $('[data-step="3"]').hide();
+        });
+        $('.btn-prev').on('click', function(){
+            if(!$('.btn-prev').hasClass('disabled')){
+                prevStep();
+            }
+        });
+        $(document).on('click', '.confirmarHorario', function(){
+            $.ajax({
+                type: "GET",
+                url: "../../controller/ControllerAgendamento.php",
+                data: "acao=finalizarAgendamento",
+                success: function(data){
+                    $.notify({
+                        title: '<strong>Sucesso!</strong>',
+                        message: 'Agendamento efetuado com êxito.'
+                    },{
+                        delay: 3000,
+                        type: "success",
+                        placement:{
+                            from: "top",
+                            align: "left"
+                        }
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+            $('#modalAgenda').modal('toggle');
+        });
+        $(document).on('click', '.selecionar', function(){
+            var data = new Date();
+            alert(data);
+            var dataString = data.getFullYear()+"-"+(data.getMonth()+1)+"-"+data.getDate();
+            alert(dataString);
+            $.ajax({
+                type: "POST",
+                url: "../../controller/ControllerAgendamento.php",
+                data: "acao=listaHtml&id="+$(this).data('id')+"&data="+dataString,
+                success: function(data){
+                    $('[data-step="2"]').html(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+            nextStep();
+        });
+        $(document).on('click', '.selecionarHorario', function(){
+            $.ajax({
+                type: "POST",
+                url: "../../controller/ControllerAgendamento.php",
+                data: "acao=confirmarAgendamento&hora="+$(this).data('hora'),
+                success: function(data){
+                    $('[data-step="3"]').html(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+            nextStep();
+        });
+        $(this).on('click', '.btnAgendar', function(){
+            $.ajax({
+                type: "GET",
+                url: "../../controller/ControllerAmbiente.php",
+                data: "acao=listaHtml&id="+$(this).data('id'),
+                success: function(data){
+                    $('[data-step="1"').html(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        });
         $('#btnPrivado').removeClass('btn-default');
         $('#btnPrivado').addClass('btn-success');
         $('#input-images').fileinput({
@@ -410,7 +522,20 @@ session_start();?>
                 $('#btnPrivado').addClass('btn-success');
             }
         });
-
+        function nextStep(){
+            $('[data-step="'+count+'"').hide();
+            count++;
+            $('[data-step="'+count+'"').show();
+            $('.btn-prev').removeClass('disabled');
+        }
+        function prevStep(){
+            $('[data-step="'+count+'"').hide();
+            count--;
+            $('[data-step="'+count+'"').show();
+            if(count == 1){
+                $('.btn-prev').addClass('disabled');
+            }
+        }
     });
 </script>
 </html>

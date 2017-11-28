@@ -94,5 +94,11 @@ class Agendamento
         $this->dataHoraFim = $dataHoraFim;
     }
 
+    public function getHoraInicio(){
+        $hora = DateTime::createFromFormat("Y-m-d H:i:s", $this->dataHoraInicio);
+        $hora = $hora->format("H");
+        return $hora;
+    }
+
 
 }

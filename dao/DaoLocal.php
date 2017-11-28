@@ -18,10 +18,10 @@ class DaoLocal
             $stmt->execute();
             $lastId = $db->lastInsertId();
 
-            $stmtImagem = $db->prepare("INSERT INTO gee.imagem (arquivo, id_local) VALUES (pg_escape_bytea($image->getArquivo()), $lastId)");
+            /*$stmtImagem = $db->prepare("INSERT INTO gee.imagem (arquivo, id_local) VALUES (pg_escape_bytea($image->getArquivo()), $lastId)");
             //$stmtImagem->bindValue(":arquivo", pg_escape_bytea($image->getArquivo()));
             //$stmtImagem->bindValue(":id_local", $lastId);
-            $stmtImagem->execute();
+            $stmtImagem->execute();*/
 
             foreach ($categorias as $cat){
                 $stmtCatLocal = $db->prepare("INSERT INTO gee.local_categoria (id_categoria, id_local) VALUES (:categoria_id, :local_id)");
