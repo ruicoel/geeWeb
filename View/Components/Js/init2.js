@@ -89,6 +89,7 @@ function initMap() {
                         contentString+= '<p><button type="button" class="btn btn-success btn-xs"> Público </button></p>';
                     }else {
                         contentString+=  '<p><button type="button" class="btn btn-warning btn-xs"> Privado </button></p>';
+                        contentString+=  '<p><button type="button" class="btn btn-success btn-md btnAgendar" data-id="'+id+'"> Detalhes e Agendamento </button></p>';
                     }
                     contentString+=    '</div></div>';
                     //var icon = customLabel[type] || {};
@@ -269,6 +270,10 @@ $(document).ready(function(){
 
    });
 
+   $(document).on('click', '.btnAgendar', function(){
+      $('#modalAgenda').modal('show');
+      $('.btn-prev').addClass('disabled');
+   });
 
 
    $(document).on('click', '#btnNaoAdd', function () {
