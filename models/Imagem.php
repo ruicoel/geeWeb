@@ -6,7 +6,7 @@
  * Time: 20:01
  */
 
-class Imagem
+class Imagem implements \JsonSerializable
 {
     private $id;
     private $arquivo;
@@ -77,5 +77,18 @@ class Imagem
         $this->idLocal = $idLocal;
     }
 
+    public function jsonSerialize() {
+        $this->idAmbiente != null ? $obj =  array(
+            'id' => $this->id,
+            'arquivo' => $this->arquivo,
+            'id_ambiente' => $this->getIdAmbiente()
+        ) :
+        $obj =  array(
+            'id' => $this->id,
+            'arquivo' => $this->arquivo,
+            'id_local' => $this->getIdLocal()
+        );
 
+        return $obj;
+    }
 }

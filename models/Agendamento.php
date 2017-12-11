@@ -13,6 +13,7 @@ class Agendamento
     private $dataHoraFim;
     private $idAmbiente;
     private $idUsuario;
+    private $nomeUsuario;
 
     /**
      * @return mixed
@@ -93,6 +94,24 @@ class Agendamento
     {
         $this->dataHoraFim = $dataHoraFim;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNomeUsuario()
+    {
+        return $this->nomeUsuario;
+    }
+
+    /**
+     * @param mixed $nomeUsuario
+     */
+    public function setNomeUsuario($nomeUsuario)
+    {
+        $this->nomeUsuario = $nomeUsuario;
+    }
+
+
 
     public function getHoraInicio(){
         $hora = DateTime::createFromFormat("Y-m-d H:i:s", $this->dataHoraInicio);

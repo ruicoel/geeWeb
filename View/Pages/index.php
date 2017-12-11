@@ -35,6 +35,12 @@ session_start();?>
             margin-left: 15px;
             height: 150px
          }
+         .imagem{
+             width: 100%;
+         }
+        .step1{
+            margin: 20px;
+        }
     </style>
 
     <!--     Fonts and icons     -->
@@ -156,11 +162,6 @@ session_start();?>
                                 '<label class="sr-only" for="senha_pop_up">Password</label>' .
                                 '<input type="password" class="form-control" id="senha_pop_up" placeholder="Password" name="senha" required>' .
                                 '</div>' .
-                                '<div class="checkbox">' .
-                                '<label>' .
-                                '<input type="checkbox"> Lembrar-me' .
-                                '</label>' .
-                                '</div>' .
                                 '<div class="form-group">' .
                                 '<button type="submit" class="btn btn-success btn-block">Logar</button>' .
                                 '</div>' .
@@ -186,7 +187,7 @@ session_start();?>
                         <div class="card">
                             <div class="header">
                                 <label>Encontre o seu lugar para emagrecer</label>
-                                <input type="text" class="form-control">
+                                <input class="type-local form-control" name="nome" type="text" placeholder="Search"/>
                             </div>
                             <div class="content">
                                 <div id="map" style="height: 600px; width: 100%"></div>
@@ -254,7 +255,7 @@ session_start();?>
                         </button>
                     </div>
                     <div class="modal-body">
-                    <form action="ControllerLogin.php" method="post" id="formAddNovoLugar" enctype="multipart/form-data">
+                    <form action="../../controller/ControllerLocal.php" method="post" class="form3" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label class="form-control-label">Selecione as fotos:</label>
                                 <input id="input-images" name="arquivo" type="file" class="file-loading" multiple>
@@ -268,7 +269,7 @@ session_start();?>
                                 <div id="catNovoLugar"></div>
                             </div>
                             <div class="form-group checkPrivado">
-                                <label class="form-control-label">Privado/Público:</label>
+                                <label class="Coform-control-label">Privado/Público:</label>
                                 <div class='button-checkbox'>
                                   <button type='button' id="btnPrivado" class='btn btn-warning' data-color='warning'>
                                       <span id="textPrivado">Público</span>
@@ -282,18 +283,19 @@ session_start();?>
                             </div>
 
                     </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="acao" value="cadastrar"/>
+                    <div class="modal-footer footer-novo-local">
+                        <input type="hidden" id='acaoLocal' name="acao" value="cadastrar"/>
                         <button type="button" class="btn btn-secondary btnCloseModal" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="novoLugar">Salvar</button>
+                        <input type="submit" class="btn btn-primary" value="Salvar" id="novoLugar"/>
                     </div>
                     </form>
                 </div>
             </div>
         </div>
 
+
 <!-- Modal -->
-<div class="modal fade multi-step" id="modalAgenda" tabindex="-1" role="dialog" aria-labelledby="modalAgenda" aria-hidden="true">
+<div class="modal fade multi-step" id="modalAgenda" role="dialog" aria-labelledby="modalAgenda" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -303,7 +305,7 @@ session_start();?>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" data-step="1" data-title="First Step"></div>
+                <div class="row step1" data-step="1" data-title="First Step"></div>
                 <div class="row" style="display: none;" data-step="2" data-title="Second Step"></div>
                 <div class="row" style="display: none;" data-step="3" data-title="Third Step"></div>
             </div>
@@ -316,6 +318,54 @@ session_start();?>
 
             </div>
         </div>
+<div class="modal fade" id="modalEditarLocal" tabindex="-1" role="dialog" aria-labelledby="modalEditarLocalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="modalEditarLocalLabel" style="font-weight: bold; text-size: 30px;">Editar Local</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="../../controller/ControllerLocal.php" method="post" id="formEditarLocal" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-control-label">Selecione as fotos:</label>
+                        <input id="input-images editarInput" name="arquivoLocal" id="arquivoLocalEditar" type="file" class="file-loading" multiple>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">Nome:</label>
+                        <input type="text" class="form-control editarInput" name="nomeLocal" id="nomeLocalEditar"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">Categoria:</label>
+                        <div id="catLocal"></div>
+                    </div>
+                    <div class="form-group checkPrivado">
+                        <label class="form-control-label">Privado/Público:</label>
+                        <div class='button-checkbox'>
+                            <button type='button' id="btnPrivado" class='btn btn-warning' data-color='warning'>
+                                <span id="textPrivadoLocal">Público</span>
+                            </button>
+                            <input type='checkbox' class='hidden editarInput'  name='privado' id="chkPrivadoEditar" value='0'/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">Descrição:</label>
+                        <textarea class="form-control editarInput" name="descLocal" id="descLocalEditar" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="acao" value="atualizar"/>
+                    <input type="hidden" name="idLocal" value=""/>
+                    <button type="button" class="btn btn-secondary btnCloseModal" data-dismiss="modal">Fechar</button>
+                    <input type="submit" class="btn btn-primary" id="novoLugar" value="Salvar"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     </div>
 </div>
 </div>
@@ -325,6 +375,7 @@ session_start();?>
 
 </script>
 <!--   Core JS Files   -->
+<link rel="stylesheet" href="../Components/Bootstrap/css/bootcomplete.css">
 <!-- build:jquery -->
 <script src="../Components/JQuery/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="../Components/JQuery/jquery-ui.js"></script>
@@ -340,21 +391,27 @@ session_start();?>
 <!-- endbuild -->
 
 <!-- build:js -->
+<script src="../Components/JQuery/file-input/js/fileinput.min.js"></script>
 <script src="../Components/Js/init.js"></script>
 <script src="../Components/Js/init2.js"></script>
 <!--<script src="../Components/Js/multi-step-modal.js"></script>-->
-<script src="../Components/JQuery/file-input/js/fileinput.min.js"></script>
+
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-M0IMpBPaMnq6OA55g6S9c0FT08WDf5w&callback=initMap" ></script>
 
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <!-- endbuild -->
 
-
 <!--  Notifications Plugin    -->
 <script src="../Components/Bootstrap/js/bootstrap-notify.js"></script>
+<!--<link href="../Components/Bootstrap/css/jquery.typeahead.min.css" rel="stylesheet" />
+<script src="../Components/Bootstrap/js/jquery.typeahead.min.js"></script>-->
+<script src="../Components/Bootstrap/js/jquery.bootcomplete.js"></script>
 <script>
     $("document").ready(function(){
+        $('.type-local').bootcomplete({
+            url:'../../controller/ControllerLocal.php?acao=findLocal'
+        });
         var count = 1;
         $('.btn-close-agenda').on('click', function () {
             $('[data-step="1"]').show();
@@ -393,9 +450,7 @@ session_start();?>
         });
         $(document).on('click', '.selecionar', function(){
             var data = new Date();
-            alert(data);
             var dataString = data.getFullYear()+"-"+(data.getMonth()+1)+"-"+data.getDate();
-            alert(dataString);
             $.ajax({
                 type: "POST",
                 url: "../../controller/ControllerAgendamento.php",
@@ -428,10 +483,23 @@ session_start();?>
         $(this).on('click', '.btnAgendar', function(){
             $.ajax({
                 type: "GET",
+                url: "../../controller/ControllerLocal.php",
+                data: "acao=detalheLocal&index=true&id="+$(this).data('id'),
+                success: function(data){
+                    console.log(data);
+                    $('[data-step="1"').html(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+            $.ajax({
+                type: "GET",
                 url: "../../controller/ControllerAmbiente.php",
                 data: "acao=listaHtml&id="+$(this).data('id'),
                 success: function(data){
-                    $('[data-step="1"').html(data);
+                    $('[data-step="1"').append(data);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert(xhr.status);
@@ -446,6 +514,47 @@ session_start();?>
             maxFileCount: 1,
             showUpload: false,
             showCaption: false
+        });
+        $(document).on('click', '.editar', function(){
+            var id = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "../../controller/ControllerLocal.php",
+                data: "acao=editar&id="+id,
+                success: function(data){
+                    alert(JSON.stringify(data));
+                    //console.log(data.nome);
+                    $('#nomeLocalEditar').val(data.nome);
+                    $('#descLocalEditar').val(data.descricao);
+                    $('#chkPrivadoEditar').attr('checked', data.privado);
+                    $('input[name="idLocal"]').val(id);
+                    if(data.privado){
+                        $('#textPrivadoLocal').html('Privado');
+                    }else{
+                        $('#textPrivadoLocal').html('Público');
+                    }
+                    $.each(data[0], function(i, item){
+                        //alert(item);
+                        $('*[data-cat="'+item+'"]*').attr("checked", true);
+                    });
+                    //alert(data);
+                    $('#arquivoLocalEditar').fileinput('destroy');
+                    $('#arquivoLocalEditar').fileinput({
+                        allowedFileTypes: ["image"],
+                        showUpload: false,
+                        initialPreviewAsData: true,
+                        initialPreviewFileType: 'image',
+                        initialPreview:['http://localhost/'+data.imagem]
+                    });
+                    $('#modalEditarLocal').modal('show');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+            return false;
         });
        $("#formCriarConta").submit(function(){
            var data = $(this).serialize()+"&acao=criarConta";
@@ -495,13 +604,7 @@ session_start();?>
                             }
                         });
                     }else{
-                        //alert(data);
-                        if(data == 1) {
-                            $(location).attr('href', '/View/Pages/home.php');
-                        }else if(data == 0){
-                            $(location).attr('href', '/View/Pages/index.php');
-                        }
-                        //alert(data);
+                        $(location).attr('href', data);
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
@@ -537,5 +640,19 @@ session_start();?>
             }
         }
     });
+    function setaMapa(id){
+        console.log(markers);
+        pt = arrMarkers[id].getPosition();
+        newpt = new google.maps.LatLng(pt.lat(), pt.lng());
+        map.panTo(newpt);
+        if (infowindow) {
+            infowindow.close();
+        }
+        var infoWindow = new google.maps.InfoWindow();
+        infoWindow.setContent(arrMarkers[id].get('iwcontent'));
+        infoWindow.setPosition(arrMarkers[id].getPosition());
+
+        infoWindow.open(map, arrMarkers[id]);
+    }
 </script>
 </html>

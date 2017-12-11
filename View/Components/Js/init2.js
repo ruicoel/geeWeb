@@ -5,7 +5,7 @@ var map;
 var markers = [];
 var newMarker;
 var infowindow;
-
+var arrMarkers = {};
 var customLabel = {
     restaurant: {
         label: 'R'
@@ -65,6 +65,7 @@ function initMap() {
             downloadUrl('../../dao/xml.php', function(data) {
                 var xml = data.responseXML;
                 markers = xml.documentElement.getElementsByTagName('marker');
+
                 Array.prototype.forEach.call(markers, function(markerElem) {
                     var name = markerElem.getAttribute('nome');
                     var id = markerElem.getAttribute('id');
@@ -105,7 +106,7 @@ function initMap() {
                         contentString+= '<p><button type="button" class="btn btn-success btn-xs"> Público </button></p>';
                     }else {
                         contentString+=  '<p><button type="button" class="btn btn-warning btn-xs"> Privado </button></p>';
-                        contentString+=  '<p><button type="button" class="btn btn-success btn-md btnAgendar" data-id="'+id+'"> Detalhes e Agendamento </button></p>';
+                        contentString+=  '<p><button type="button" class="btn btn-warning btn-md btnAgendar" data-id="'+id+'"> Detalhes e Agendamento </button></p>';
                     }
                     contentString+=    '</div></div>';
                     //var icon = customLabel[type] || {};
@@ -115,12 +116,15 @@ function initMap() {
                         icon: icons.localAtivo
                         //label: icon.label
                     });
+                    newMarker.set('id',id);
+                    newMarker.set('iwcontent',contentString);
                     var infoWindow = new google.maps.InfoWindow({
                        content: contentString
                     });
                     newMarker.addListener('click', function() {
                         infoWindow.open(map, this);
                     });
+                    arrMarkers[id] = newMarker;
                 });
             });
             map.setCenter(pos);
@@ -248,8 +252,10 @@ function addPlace() {
 
 
 $(document).ready(function(){
-   $(document).on('click', '#novoLugar', function (e) {
-
+   $('.form3').submit(function(e) {
+       //alert('cadastro');
+       e.preventDefault();
+       //alert('entrou');
        /*nome         = $('#nomeLocal').val();
        categoria    = $('input[name=cat]:checked').val();
        descricao    = $('#descLocal').val();
@@ -262,9 +268,7 @@ $(document).ready(function(){
        console.log(formData.entries());
        alert(formData.entrie)*/
        ponto        = latitude + ", " + longitude;
-       var data = $('#formAddNovoLugar').serialize();
-       data += '&ponto='+ponto;
-       var formData = new FormData($('#formAddNovoLugar')[0]);
+       var formData = new FormData(this);
        formData.append("ponto", ponto);
        console.log(formData.getAll("arquivo"));
        $.ajax({
@@ -273,6 +277,7 @@ $(document).ready(function(){
            data: formData,
            contentType: false,
            processData: false,
+           cache: false,
            success: function(result){
                /*console.log(result);*/
                $.notify({
@@ -286,6 +291,7 @@ $(document).ready(function(){
                        align: "left"
                    }
                });
+               $('#modalAddNovoLugar').modal('toggle');
            },
            error: function (xhr, ajaxOptions, thrownError) {
                console.log(xhr.status);
@@ -296,8 +302,7 @@ $(document).ready(function(){
        infowindow.close();
        newMarker.setMap(map);
        //google.maps.event.trigger(map, 'resize');
-       //try {google;} catch (e){location.reload();}
-
+       //try {google;} catch (e){location.reload();
    });
 
    $(document).on('click', '.btnAgendar', function(){

@@ -128,5 +128,9 @@ class Ambiente
         $this->ativo = $ativo;
     }
 
+    public function getValorFormatado(){
+        setlocale(LC_MONETARY, 'pt-BR');
+        return money_format('R$ %i', $this->valor);
+    }
 
 }
