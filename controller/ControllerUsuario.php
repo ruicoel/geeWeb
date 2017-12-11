@@ -30,6 +30,8 @@ class ControllerUsuario
             $this->remover();
         }else if($acao == "alterar"){
             $this->alterar();
+        }else if($acao == "findProp"){
+            $this->findProprietario();
         }
     }
 
@@ -82,6 +84,24 @@ class ControllerUsuario
         $retorno = $this->daoUsuario->alterar($usuario);
 
         print_r($retorno);
+    }
+
+    public function findProprietario(){
+        header("Content-type: application/json");
+        $keyword = strval($_GET['query']);
+        $search_param = "%{$keyword}%";
+        $daoUsuario = new DaoUsuario();
+        error_log('SEARCH PARAM ===>>'.$search_param);
+        $vetUsuario = $daoUsuario->findProp($search_param);
+        if (isset($vetUsuario)) {
+            foreach($vetUsuario as $usuario){
+                $localResult[] = array('id'=>$usuario->getId(), 'label'=>$usuario->getNome());
+            }
+//            error_log(json_encode((array) $vetLocal));
+//            error_log('CHEGOOOU =>>>>');
+            // echo json_encode((array) $vetLocal);
+            print_r(json_encode($localResult));
+        }
     }
 
 

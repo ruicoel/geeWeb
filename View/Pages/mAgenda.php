@@ -5,7 +5,7 @@
     <?php include_once "head.php"; ?>
     <style>
         .hora {
-            width: 30px;
+            width: 40px;
         }
     </style>
 </head>
@@ -20,11 +20,17 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col col-xs-6">
-                            <h3 class="panel-title">Nome do Ambiente</h3>
+                            <h3 class="panel-title">Ambiente :
+                                <?php
+                                    require_once '../../models/Ambiente.php';
+                                    $ambiente = unserialize($_SESSION['ambiente']);
+                                    echo $ambiente->getNome();
+                                echo ' </h3>';
+                            echo '<h3 class="panel-title">Valor : '.$ambiente->getValorFormatado().'</h3>';?>
                         </div>
                         <div class="col col-xs-6 text-right">
-                            <button type="button" class="btn btn-sm btn-primary btn-create"> < </button>
-                            <button type="button" class="btn btn-sm btn-primary btn-create"> > </button>
+                            <button type="button" class="btn btn-sm btn-primary btn-prev-page"> < </button>
+                            <button type="button" class="btn btn-sm btn-primary btn-next-page"> > </button>
                         </div>
                     </div>
                 </div>
@@ -32,79 +38,130 @@
                     <div class="table-responsive">
                         <table class="table agenda">
                             <thead>
-                                <th colspan="3">21/09/2017</th>
-                                <th colspan="3">22/09/2017</th>
+                                <th colspan="3" id="data1"></th>
+                                <th colspan="3" id="data2"></th>
                             </thead>
-                            <tbody>
+                            <thead>
                                 <th>Horários</th>
                                 <th>Agendamento</th>
                                 <th>Ações</th>
-                            <?php
-                                $min = 15;
-                                for($i = 0; $i < 24; $i++){
-                                    echo "<tr>";
-                                    if($i < 10){
-                                        echo "<td class='hora'><div class='content'> 0".$i.":".$min." </div></td>";
-                                    }else{
-                                        echo "<td class='hora'><div class='content'>".$i.":".$min." </div></td>";
-                                    }
-                                    echo "<td><div class='content'> Agendamento: ".$i."</div></td>";
-                                    echo "<td><div class='content'> Ações</div></td>";
-                                    if($i < 10){
-                                        echo "<td class='hora'><div class='content'> 0".$i.":".$min." </div></td>";
-                                    }else{
-                                        echo "<td class='hora'><div class='content'>".$i.":".$min." </div></td>";
-                                    }
-                                    echo "<td><div class='content'> Agendamento: ".$i."</div></td>";
-                                    echo "<td><div class='content'> Ações</div></td>";
-                                    echo "</tr>";
-                                }
+                                <th>Horários</th>
+                                <th>Agendamento</th>
+                                <th>Ações</th>
+                            </thead>
+                            <tbody>
 
-                            ?>
+
                             </tbody>
 
                         </table>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
 
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade multi-step" id="modalAgenda" tabindex="-1" role="dialog" aria-labelledby="modalAgenda" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="js-title-step" id="modalAgendaLabel">Agendar horário</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body body-agenda">
+                <div class='table-responsive'>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning btn-prev pull-left">Voltar</button>
+                <button type="button" class="btn btn-default btn-close-agenda" data-orientation="cancel" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-success btn-next">Next</button>-->
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <?php include_once "footer.php"; ?>
 <script src="../Components/JQuery/jquery-minicolors.js"></script>
 <link href="../Components/Css/jquery.minicolors.css" rel="stylesheet" />
 <script>
-    var nitens = 5;
-    var pagina=1;
-    function getitens(pag, max){
+    var data1 = new Date();
+    var data1string = data1.getDate()+"/"+(data1.getMonth()+1)+"/"+data1.getFullYear();
+    var data2 = new Date();
+    data2.setDate(data2.getDate()+1);
+    var data2string = data2.getDate()+"/"+(data2.getMonth()+1)+"/"+data2.getFullYear();
+    function getitens(data1){
         $.ajax({
             type: 'GET',
-            data: 'acao=lista&pag='+pag+'&max='+max,
-            url:'../../controller/ControllerCategoria.php',
+            data: 'acao=listarAgenda&data1='+data1,
+            url:'../../controller/ControllerAgendamento.php',
             success: function(retorno){
-                $('#listaCategorias').html(retorno);
-                nitens = max;
-                pagina = pag;
+                $('.agenda tbody').html(retorno);
+                $('#data1').html(data1string);
+                $('#data2').html(data2string);
             }
         })
     }
     $("document").ready(function(){
-        getitens(pagina, nitens);
-        $('input[name="cor"]').minicolors();
-        $(document).on('click', '.remover', function(){
+        getitens(data1string);
+        $(document).on('click', '.btn-next-page', function(){
+           data1.setDate(data2.getDate()+1);
+           data1string = data1.getDate()+"/"+(data1.getMonth()+1)+"/"+data1.getFullYear();
+           data2.setDate(data2.getDate()+2);
+           data2string = data2.getDate()+"/"+(data2.getMonth()+1)+"/"+data2.getFullYear();
+           getitens(data2string);
+        });
+        $(document).on('click', '.btn-prev-page', function(){
+            data1.setDate(data1.getDate()-2);
+            data1string = data1.getDate()+"/"+(data1.getMonth()+1)+"/"+data1.getFullYear();
+            data2.setDate(data2.getDate()-2);
+            data2string = data2.getDate()+"/"+(data2.getMonth()+1)+"/"+data2.getFullYear();
+            getitens(data1string);
+        });
+        $(document).on('click', '.confirmarHorario', function(){
+            var nome = $('input[name="nome"]').val();
+            $.ajax({
+                type: "GET",
+                url: "../../controller/ControllerAgendamento.php",
+                data: "acao=finalizarAgendamento&nome="+nome,
+                success: function(data){
+                    $.notify({
+                        title: '<strong>Sucesso!</strong>',
+                        message: 'Agendamento efetuado com êxito.'
+                    },{
+                        delay: 3000,
+                        type: "success",
+                        placement:{
+                            from: "top",
+                            align: "left"
+                        }
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+            $('#modalAgenda').modal('toggle');
+            getitens(data1string);
+        });
+        $(document).on('click', '.btn-cancelar', function(){
             var id = $(this).data("id");
             $.ajax({
                 type: 'GET',
                 data: 'acao=remover&id='+id,
-                url:'../../controller/ControllerCategoria.php',
+                url:'../../controller/ControllerAgendamento.php',
                 success: function(retorno){
-                    getitens(pagina, nitens);
+                    getitens(data1string);
                     $.notify({
                         title: '<strong>Sucesso!</strong>',
-                        message: 'Remoção efetuada com êxito.'
+                        message: 'Agendamento cancelado com êxito.'
                     },{
                         delay: 3000,
                         type: "warning",
@@ -116,46 +173,18 @@
                 }
             })
         });
-        $(document).on('click', '.editar', function(){
-            var descricao = $(this).closest('tr').find('.listaDescricao').html();
-            var cor = $(this).closest('tr').find('.listaCor').data("color");
-            var id = $(this).data('id');
-            $('input[name="descricao"]').val(descricao.trim());
-            $('input[name="cor"]').minicolors("value", cor);
-            $('#formCategoria').append("<input type='hidden' name='id' value='"+id+"'/>");
-            $('input[name="acao"]').val("alterar");
-        });
-
-        $("#formCategoria").submit(function(){
-            var data = $(this).serialize();
+        $(document).on('click', '.selecionarHorario', function(){
+            var data = $(this).data('dia');
+            var hora = $(this).data('hora');
             $.ajax({
-                type: "POST",
-                url: "../../controller/ControllerCategoria.php",
-                data: data,
-                success: function(data){
-                    $('#formCategoria').trigger("reset");
-                    $('input[name="acao"]').val("cadastrar");
-                    $('input[name="cor"]').minicolors("destroy");
-                    $('input[name="cor"]').minicolors("create");
-                    $.notify({
-                        title: '<strong>Sucesso!</strong>',
-                        message: 'Cadastro efetuado com êxito.'
-                    },{
-                        delay: 5000,
-                        type: "success",
-                        placement:{
-                            from: "top",
-                            align: "left"
-                        }
-                    });
-                    getitens(pagina, nitens);
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert(xhr.status);
-                    alert(thrownError);
+                type: 'GET',
+                data: 'acao=confirmarAgendamentoProp&data='+data+'&hora='+hora,
+                url:'../../controller/ControllerAgendamento.php',
+                success: function(retorno){
+                    $('.body-agenda .table-responsive').html(retorno);
+                    $('#modalAgenda').modal('show');
                 }
-            });
-            return false;
+            })
         });
     });
 </script>

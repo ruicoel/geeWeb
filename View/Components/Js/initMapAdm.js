@@ -120,7 +120,7 @@ function initMap() {
                     var contentString = '<div class="info-window">' +
                         '<h2>'+markerElem.getAttribute('nome')+'</h2>' +
                         '<div class="info-content">';
-                        contentString+= '<p><button style="width: 100%"; type="button" class="btn btn-primary btn-xl" id="detalhes"> Detalhes </button></p>';
+                        contentString+= '<p><button style="width: 100%"; type="button" class="btn btn-primary btn-xl detalhes" data-id="'+id+'"> Detalhes </button></p>';
                         contentString+=    '</div></div>';
 
                     if(markerElem.getAttribute('ativo') == 1){
@@ -219,7 +219,7 @@ function addPlace() {
 
 
 $(document).ready(function(){
-   $(document).on('click', '#novoLugar', function (e) {
+   /*$(document).on('click', '#novoLugar', function (e) {
 
        ponto        = latitude + ", " + longitude;
        var data = $('#formAddNovoLugar').serialize();
@@ -234,7 +234,7 @@ $(document).ready(function(){
            contentType: false,
            processData: false,
            success: function(result){
-               /*console.log(result);*/
+               /!*console.log(result);*!/
                $.notify({
                    title: '<strong>Local inserido com sucesso!</strong>',
                    message: 'Aguarde a autorização para que seja possível encontrá-lo'
@@ -255,7 +255,7 @@ $(document).ready(function(){
        addPlace();
        infowindow.close();
        newMarker.setMap(map);
-   });
+   });*/
 
 
 
@@ -267,3 +267,69 @@ $(document).ready(function(){
        console.log("clicado");
    });
 });
+function categoriasCheckbox() {
+    setTimeout(function () {
+        $('.button-checkbox').each(function () {
+            // Settings
+            var $widget = $(this),
+                $button = $widget.find('button'),
+                $checkbox = $widget.find('input:checkbox'),
+                color = $button.data('color'),
+                settings = {
+                    on: {
+                        icon: 'glyphicon glyphicon-check'
+                    },
+                    off: {
+                        icon: 'glyphicon glyphicon-unchecked'
+                    }
+                };
+
+            // Event Handlers
+            $button.on('click', function () {
+                $checkbox.prop('checked', !$checkbox.is(':checked'));
+                $checkbox.triggerHandler('change');
+                updateDisplay();
+            });
+            $checkbox.on('change', function () {
+                updateDisplay();
+            });
+
+            // Actions
+            function updateDisplay() {
+                var isChecked = $checkbox.is(':checked');
+
+                // Set the button's state
+                $button.data('state', (isChecked) ? "on" : "off");
+
+                // Set the button's icon
+                $button.find('.state-icon')
+                    .removeClass()
+                    .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+                // Update the button's color
+                if (isChecked) {
+                    $button
+                        .removeClass('btn-default')
+                        .addClass('btn-' + color + ' active');
+                }
+                else {
+                    $button
+                        .removeClass('btn-' + color + ' active')
+                        .addClass('btn-default');
+                }
+            }
+
+            // Initialization
+            function init() {
+
+                updateDisplay();
+
+                // Inject the icon if applicable
+                if ($button.find('.state-icon').length == 0) {
+                    $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+                }
+            }
+            init();
+        });
+    },1000)
+}

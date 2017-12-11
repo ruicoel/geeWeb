@@ -49,12 +49,11 @@ class ControllerLogin
                 $_SESSION['senha'] = $usuario->getSenha();
                 $_SESSION['tipo'] = $usuario->getTipo();
             }
-            if($usuario->getTipo() == TipoUsuario::MODERADOR) {
+            if($usuario->getTipo() == TipoUsuario::MODERADOR || $usuario->getTipo() == TipoUsuario::PROPRIETARIO) {
                 print_r('/View/Pages/home.php');
             }else if($usuario->getTipo() == TipoUsuario::COMUM){
                 print_r('/View/Pages/index.php');
             }
-            print_r($usuario->getTipo());
         }else{
             print_r(false);
         }

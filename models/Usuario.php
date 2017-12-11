@@ -14,6 +14,7 @@ class Usuario
     private $senha;
     private $tipo;
 
+
     /**
      * @return mixed
      */

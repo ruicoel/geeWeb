@@ -7,6 +7,7 @@ function trazerCategorias() {
         data: data,
         success: function(result){
             $("#catNovoLugar").html(result);
+            $("#catLocal").html(result);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);

@@ -16,33 +16,35 @@
             </div>
 
             <ul class="nav">
-
-                <li>
-                    <a href="#grupo-categoria" class="list-group" data-toggle="collapse"><p> <span class="glyphicon glyphicon-globe"></span> Locais</p></a>
-                    <div class="collapse" id="grupo-categoria">
-                        <a href="mLocalAmbiente.php" class="list-group-item">
-                            <p id="cat1"> <span class="glyphicon glyphicon-map-marker"></span> Meus Locais</p>
-                        </a>
-                    </div>
-                </li>
-
-                <li>
-                    <a href="mCategoria.php">
-                        <p><span class="glyphicon glyphicon-tag"></span> Categorias</p>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="mUsuario.php">
-                        <p><span class="glyphicon glyphicon-user"></span> Usuários</p>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="mMaps.php">
-                        <p><span class="glyphicon glyphicon-map-marker"></span> Locais para Aprovar</p>
-                    </a>
-                </li>
+                <?php
+                require_once '../../models/TipoUsuario.php';
+                if($_SESSION['tipo'] == TipoUsuario::PROPRIETARIO) {
+                    echo ' <li>' .
+                        '<a href="#grupo-categoria" class="list-group" data-toggle="collapse"><p> <span class="glyphicon glyphicon-globe"></span> Locais</p></a>' .
+                        '<div class="collapse" id="grupo-categoria">' .
+                        '<a href="mLocalAmbiente.php" class="list-group-item">' .
+                        '<p id="cat1"> <span class="glyphicon glyphicon-map-marker"></span> Meus Locais</p>' .
+                        '</a>' .
+                        '</div>' .
+                        '</li>';
+                }else if($_SESSION['tipo'] == TipoUsuario::MODERADOR) {
+                    echo '<li>' .
+                        '<a href="mCategoria.php">' .
+                        '<p><span class="glyphicon glyphicon-tag"></span> Categorias</p>' .
+                        '</a>' .
+                        '</li>' .
+                        '<li>' .
+                        '<a href="mUsuario.php">' .
+                        '<p><span class="glyphicon glyphicon-user"></span> Usuários</p>' .
+                        '</a>' .
+                        '</li>' .
+                        '<li>' .
+                        '<a href="mMaps.php">' .
+                        '<p><span class="glyphicon glyphicon-map-marker"></span> Locais para Aprovar</p>' .
+                        '</a>' .
+                        '</li>';
+                }
+                ?>
             </ul>
         </div>
     </div>

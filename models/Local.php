@@ -6,7 +6,7 @@
  * Time: 20:03
  */
 
-class Local
+class Local implements \JsonSerializable
 {
     private $id;
     private $nome;
@@ -14,6 +14,7 @@ class Local
     private $ponto;
     private $ativo;
     private $privado;
+    private $idUsuario;
 
     /**
      * @return mixed
@@ -111,15 +112,32 @@ class Local
         $this->privado = $privado;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+
+    /**
+     * @param mixed $idUsuario
+     */
+    public function setIdUsuario($idUsuario)
+    {
+        $this->idUsuario = $idUsuario;
+    }
+
+
     public function jsonSerialize() {
-        $obj =  [
+        $obj =  array(
             'id' => $this->id,
             'nome' => $this->nome,
             'descricao' => $this->descricao,
             'ponto' => $this->ponto,
             'ativo' => $this->ativo,
             'privado' => $this->privado
-        ];
+        );
 
         return $obj;
     }

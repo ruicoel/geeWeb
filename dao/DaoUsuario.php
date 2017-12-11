@@ -1,6 +1,8 @@
 <?php
-require_once '../models/DatabaseConnection.php';
-require_once '../models/TipoUsuario.php';
+file_exists('../models/DatabaseConnection.php') ? require_once '../models/DatabaseConnection.php' : require_once '../../models/DatabaseConnection.php';
+file_exists('../models/TipoUsuario.php') ? require_once '../models/TipoUsuario.php' : require_once '../../models/TipoUsuario.php';
+file_exists('../models/Usuario.php') ? require_once '../models/Usuario.php' : require_once '../../models/Usuario.php';
+
 
 class DaoUsuario{
     public function findUsuario(Usuario $usuario){
@@ -81,6 +83,27 @@ class DaoUsuario{
         }
 
     }
+    public function findById($id){
+        try{
+            $db = DatabaseConnection::conexao();
+            $stmt = $db->prepare("SELECT * FROM gee.usuario WHERE id = :id");
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+            $result =  $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = new Usuario;
+            $user->setId($result['id']);
+            $user->setNome($result['nome']);
+            $user->setEmail($result['email']);
+            $user->setSenha($result['senha']);
+            $user->setTipo($result['tipo']);
+
+
+            return $user;
+        }catch ( PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+
+    }
     public function excluir($id){
         try{
             $db = DatabaseConnection::conexao();
@@ -112,6 +135,26 @@ class DaoUsuario{
         }catch(PDOException $ex){
             echo "Erro: ".$ex->getMessage();
         }
+    }
+
+    public function findProp($key){
+        try{
+            $db = DatabaseConnection::conexao();
+            $vetUsuario = null;
+            $stmt = $db->prepare("SELECT * FROM gee.usuario WHERE tipo = 1 AND nome LIKE :key");
+            $stmt->bindParam(":key", $key);
+            $stmt->execute();
+            foreach ($stmt as $row){
+                $usuario = new Usuario;
+                $usuario->setId($row["id"]);
+                $usuario->setNome($row["nome"]);
+                $vetUsuario[] = $usuario;
+            }
+            return $vetUsuario;
+        }catch ( PDOException $ex){
+            echo "Erro: ".$ex->getMessage();
+        }
+
     }
 
 }
